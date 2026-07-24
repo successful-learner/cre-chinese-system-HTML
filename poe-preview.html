@@ -1,0 +1,509 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRE中文運用 — 練習測驗</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f0f2f5;color:#333;line-height:1.6;padding-bottom:40px}
+.container{max-width:640px;margin:0 auto;padding:12px}
+.header{background:#1e40af;color:#fff;padding:14px 16px;text-align:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.header h1{font-size:17px;font-weight:700}
+.back-btn{position:absolute;left:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px 8px}
+.tab-bar{display:flex;gap:6px;margin:16px 0}
+.tab-btn{flex:1;padding:10px 4px;border:2px solid #1e40af;border-radius:8px;background:#fff;color:#1e40af;font-size:12px;font-weight:700;cursor:pointer;text-align:center}
+.tab-btn.active{background:#1e40af;color:#fff}
+.part-card{background:#fff;border-radius:12px;padding:18px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);cursor:pointer;transition:transform .1s;border-left:4px solid #1e40af}
+.part-card:active{transform:scale(.98)}
+.part-card h3{font-size:15px;color:#1e40af;margin-bottom:2px}
+.part-card p{font-size:13px;color:#666}
+.part-card .badge{display:inline-block;background:#dbeafe;color:#1e40af;font-size:11px;padding:2px 8px;border-radius:10px;margin-top:4px}
+.prompt-box{background:#fff;border-radius:12px;padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.prompt-box h3{font-size:14px;color:#1e40af;margin-bottom:6px}
+.prompt-text{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;font-size:12px;max-height:180px;overflow-y:auto;white-space:pre-wrap;line-height:1.5;margin-bottom:8px}
+.copy-prompt-btn{width:100%;padding:10px;background:#059669;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer}
+.copy-prompt-btn:active{background:#047857}
+.import-section{background:#fff;border-radius:12px;padding:16px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.import-section h3{font-size:14px;color:#dc2626;margin-bottom:6px}
+.import-section p{font-size:12px;color:#666;margin-bottom:8px}
+.import-textarea{width:100%;height:120px;border:2px solid #e2e8f0;border-radius:8px;padding:10px;font-size:12px;font-family:monospace;resize:vertical}
+.import-textarea:focus{border-color:#1e40af;outline:none}
+.import-btn{width:100%;padding:10px;background:#dc2626;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px}
+.import-btn:active{background:#b91c1c}
+.import-status{margin-top:8px;font-size:12px;padding:8px;border-radius:6px;display:none}
+.import-status.success{display:block;background:#d1fae5;color:#065f46}
+.import-status.error{display:block;background:#fee2e2;color:#991b1b}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;padding:10px 0}
+.progress-text{font-size:13px;color:#666}
+.timer-display{font-size:18px;font-weight:700;color:#1e40af;font-variant-numeric:tabular-nums}
+.timer-controls{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.timer-btn{padding:8px 14px;border-radius:8px;border:none;font-size:13px;font-weight:700;cursor:pointer;color:#fff}
+.timer-btn.start-btn{background:#059669}
+.timer-btn.pause-btn{background:#d97706}
+.timer-btn.resume-btn{background:#059669}
+.q-card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:12px}
+.passage-toggle{background:#dbeafe;border:none;border-radius:8px;padding:10px 14px;width:100%;text-align:left;font-size:13px;color:#1e40af;cursor:pointer;margin-bottom:10px;font-weight:700}
+.passage-content{background:#f8fafc;border-radius:8px;padding:14px;margin-bottom:14px;font-size:14px;line-height:2;max-height:260px;overflow-y:auto;border:1px solid #e2e8f0}
+.q-stem{font-size:15px;font-weight:700;margin-bottom:14px;line-height:1.7}
+.opt-btn{width:100%;padding:13px 14px;margin-bottom:7px;border:2px solid #e5e7eb;border-radius:10px;background:#fff;font-size:14px;text-align:left;cursor:pointer;transition:all .12s;min-height:46px;line-height:1.5}
+.opt-btn:active{transform:scale(.98)}
+.opt-btn.selected{border-color:#1e40af;background:#dbeafe}
+.nav-row{display:flex;gap:8px;margin-top:14px}
+.nav-btn{flex:1;padding:13px;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer}
+.nav-btn.prev-btn{background:#e5e7eb;color:#374151}
+.nav-btn.next-btn{background:#1e40af;color:#fff}
+.nav-btn.submit-btn{background:#dc2626;color:#fff}
+.nav-btn:disabled{opacity:.4;cursor:not-allowed}
+.result-box{background:#fff;border-radius:12px;padding:20px;margin-bottom:14px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.score-big{font-size:42px;font-weight:800;color:#1e40af}
+.score-label{font-size:14px;color:#666;margin-top:2px}
+.time-label{font-size:13px;color:#999;margin-top:4px}
+.dot-grid{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-top:12px}
+.dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.dot.ok{background:#059669}
+.dot.ng{background:#dc2626}
+.dot.skip{background:#9ca3af}
+.review-item{background:#fff;border-radius:10px;padding:14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.review-item.ri-wrong{border-left:4px solid #dc2626}
+.review-item.ri-right{border-left:4px solid #059669}
+.ri-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.ri-header span{font-size:14px;font-weight:600}
+.ri-header .arrow{font-size:18px;color:#999;transition:transform .2s}
+.ri-header .arrow.open{transform:rotate(180deg)}
+.ri-body{margin-top:10px;padding-top:10px;border-top:1px solid #f0f0f0;font-size:13px;line-height:1.7;display:none}
+.ri-body.show{display:block}
+.ri-body .lbl{font-weight:700;color:#555;margin-top:6px}
+.ri-body .your-ans{color:#dc2626}
+.ri-body .correct-ans{color:#059669}
+.copy-one-btn{margin-top:8px;padding:7px 12px;background:#f3f4f6;border:1px solid #d1d5db;border-radius:6px;font-size:12px;cursor:pointer}
+.copy-one-btn:active{background:#e5e7eb}
+.copy-all-btn{width:100%;padding:14px;background:#dc2626;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:10px}
+.copy-all-btn:active{background:#b91c1c}
+.home-btn{width:100%;padding:13px;background:#6b7280;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:20px}
+.toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
+.hidden{display:none!important}
+.section-title{font-size:14px;font-weight:700;color:#374151;margin:16px 0 8px;padding-left:4px}
+.workflow-box{background:#fffbeb;border:1px solid #fbbf24;border-radius:10px;padding:14px;margin-bottom:14px;font-size:12px;line-height:1.8}
+.workflow-box h4{color:#92400e;margin-bottom:6px;font-size:13px}
+.workflow-box ol{padding-left:18px}
+.workflow-box li{margin-bottom:2px}
+.format-hint{background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:10px;font-size:11px;font-family:monospace;white-space:pre-wrap;margin-top:8px;max-height:120px;overflow-y:auto}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="toast" id="toast"></div>
+<script>
+// ===== BUILT-IN DATA =====
+const PARTS_META = [
+{id:1,name:"Part 1 — 閱讀理解",desc:"文章閱讀 + 片段閱讀，共14題",count:14},
+{id:2,name:"Part 2 — 字詞辨識",desc:"錯別字辨認 + 簡化字對應，共8題",count:8},
+{id:3,name:"Part 3 — 句子辨析",desc:"語病辨認 + 邏輯錯誤，共8題",count:8},
+{id:4,name:"Part 4 — 詞句運用",desc:"詞語填充 + 段意銜接 + 句子排序，共15題",count:15}
+];
+
+const PASSAGE_BUILTIN = `隨着互聯網技術的發展和智能手機的普及，人們獲取資訊的方式已經產生了根本性的變化。在這個背景下，不少人開始質疑公共圖書館存在的必要性——既然幾乎所有資訊都能在網上找到，為什麼還需要實體的圖書館？\n\n事實上，這種疑問恰恰反映了人們對公共圖書館功能的狹隘理解。傳統上，圖書館確實以「藏書」和「借閱」為核心功能，但在數碼時代，其角色已經從單純的資訊提供者，轉變為社區學習和文化交流的樞紐。現代圖書館提供的服務早已超越書本借閱——從兒童故事時間、長者數碼素養課程，到創業者工作坊和社區對話活動，圖書館正在成為凝聚社區的公共空間。\n\n值得注意的是，數碼鴻溝問題並未因科技進步而消失。研究顯示，低收入家庭、長者及新來港人士在使用數碼設備和網上資源方面仍面對顯著困難。公共圖書館免費提供電腦設備、網絡連接及技術指導，在一定程度上縮窄了這道鴻溝。從這個角度看，圖書館的社會功能不僅沒有減退，反而在數碼時代變得更為重要。\n\n然而，我們也不能對圖書館的前景過於樂觀。經費不足、人手短缺、設施老化等問題長期困擾着不少公共圖書館。部分圖書館的藏書更新緩慢，難以跟上知識發展的步伐；加上開放時間有限，未能充分配合市民的生活節奏。若不能有效回應這些挑戰，圖書館被邊緣化的風險確實存在。\n\n歸根究底，公共圖書館的價值不在於它能否與互聯網競爭資訊量，而在於它能否提供一個平等、開放、有溫度的公共空間，讓不同背景的市民都能在此學習、交流和成長。這是任何數碼平台都無法完全取代的。`;
+
+const BUILTIN_QUESTIONS = {
+1:[
+{stem:"作者撰寫本文的主要目的是什麼？",options:["批評政府對公共圖書館投放資源不足","探討公共圖書館在數碼時代的定位與價值","呼籲市民多使用公共圖書館的服務","比較實體圖書館與網上資源的優劣"],answer:1,explanation:"文章從頭到尾都在討論圖書館在數碼時代的角色轉變及其價值所在。",passage:true},
+{stem:"根據文章，「不少人開始質疑公共圖書館存在的必要性」，作者對此看法是：",options:["完全同意，認為實體圖書館終將被取代","認為這反映了對圖書館功能的片面認識","認為這是合理的擔憂，圖書館確實面臨被淘汰的危機","認為提出質疑的人缺乏使用圖書館的經驗"],answer:1,explanation:"作者明確指出「這種疑問恰恰反映了人們對公共圖書館功能的狹隘理解」。",passage:true},
+{stem:"作者提及「數碼鴻溝」的作用是：",options:["說明科技發展帶來的負面影響","證明圖書館在促進社會公平方面的角色","批評政府未能有效推動數碼普及","解釋為何長者不願意使用互聯網"],answer:1,explanation:"提及數碼鴻溝後說明圖書館如何縮窄鴻溝，論證其社會功能更重要。",passage:true},
+{stem:"以下哪項是文中提及的圖書館面對的實際困難？",options:["市民閱讀風氣下降","藏書更新緩慢","社區居民反對圖書館改建","網上資源質素超越實體藏書"],answer:1,explanation:"第四段明確提到「部分圖書館的藏書更新緩慢」。",passage:true},
+{stem:"作者認為公共圖書館的核心價值在於：",options:["擁有比互聯網更全面的資訊量","提供免費的電腦設備和網絡連接","提供平等開放的公共空間促進學習和交流","舉辦多元化的社區活動"],answer:2,explanation:"末段明確指出價值在於「提供一個平等、開放、有溫度的公共空間」。",passage:true},
+{stem:"文中「從這個角度看」，「這個角度」指的是：",options:["圖書館提供多元化社區活動的角度","圖書館幫助弱勢群體跨越數碼鴻溝的角度","圖書館作為文化保育場所的角度","圖書館節省市民購書開支的角度"],answer:1,explanation:"緊接前文關於數碼鴻溝及圖書館為弱勢群體提供設備和指導的論述。",passage:true},
+{stem:"以下哪項陳述與文章內容不符？",options:["現代圖書館的功能已超越傳統的藏書和借閱","所有社會群體都已能熟練使用數碼資源","公共圖書館面臨經費和人手方面的困難","作者認為圖書館仍有被邊緣化的風險"],answer:1,explanation:"文中明確指弱勢群體「仍面對顯著困難」，直接與B矛盾。",passage:true},
+{stem:"對於圖書館的前景，作者的態度可以形容為：",options:["極度悲觀，認為被淘汰無可避免","盲目樂觀，認為圖書館地位不可動搖","審慎而有條件的肯定","完全中立，不表明任何立場"],answer:2,explanation:"一方面肯定價值，另一方面指出困難和風險，態度是審慎但基本肯定。",passage:true},
+{stem:"「語言是活的，它隨時代變遷而不斷演化。過去被視為『不規範』的用法，若獲得廣泛使用並被大眾理解，最終也可能被接納為正式用法。然而，這並不意味着我們可以對語言運用採取完全放任的態度——標準的存在，正是為了確保溝通的準確和效率。」\n\n對這段話，理解最準確的是：",options:["語言標準是不必要的","只要多數人使用就是正確的","語言演變與語言規範之間需要取得平衡","語言規範應禁止任何新用法出現"],answer:2,explanation:"前半承認變化，後半強調標準必要——兩者需平衡。"},
+{stem:"「效率並非工作的唯一衡量標準。一位員工可能工作速度極快，卻忽略細節導致錯誤頻生。相反，另一位員工雖然產出較慢，但每份文件都仔細核對，鮮少出錯。單以產出數量來評定工作表現，顯然有欠公允。」\n\n以下哪項最能概括這段話的主旨？",options:["速度慢的員工表現一定比速度快的好","評估工作表現應考慮質量而不僅是數量","處理文件時應盡量減慢速度","企業應取消以產出數量為基礎的考核"],answer:1,explanation:"核心是「單以數量評定有欠公允」，應同時考慮質量。"},
+{stem:"「社交媒體讓人們能隨時分享生活點滴，但這種便利也帶來隱憂。當人們習慣將精心篩選的生活片段展示於人前，便容易產生錯覺——以為別人的生活總是光鮮亮麗。這種比較心態，往往是焦慮和不滿的溫床。」\n\n根據這段話，以下哪項說法正確？",options:["社交媒體上的內容完全不真實","使用社交媒體必然導致心理問題","人們傾向展示經過篩選的正面內容","應該禁止在社交媒體上分享生活"],answer:2,explanation:"文中明確指「精心篩選的生活片段展示於人前」。"},
+{stem:"「批判性思維並不等同於批評或否定。它的核心是在接收資訊時保持審慎態度，不輕易接受未經驗證的說法，同時也不武斷地拒絕與自己想法不同的觀點。」\n\n這段話指出批判性思維的特點是：",options:["對所有資訊持否定態度","只接受科學實驗證明的資訊","在接受與質疑之間保持理性平衡","堅持自己觀點不受他人影響"],answer:2,explanation:"「既不盲從，也不盲拒」表明是在接受和質疑之間取得平衡。"},
+{stem:"「一個政策的成敗，往往取決於執行層面而非設計層面。歷史上不乏構思精妙的政策因執行不力而功敗垂成。因此，政策制定者在構思階段便應充分考慮落實時可能遇到的困難。」\n\n以下哪項推論與這段話的邏輯最為一致？",options:["只要執行得當任何政策都能成功","設計完善的政策不需考慮執行細節","政策設計與執行應由不同部門負責","一項政策設計優良但失敗，可能是執行環節出了問題"],answer:3,explanation:"文中指出政策可因執行不力而失敗，D與此邏輯一致。"},
+{stem:"「所謂『知易行難』，很多人明白健康飲食的重要性。然而面對即時口腹之慾時，理性認知往往不敵感官誘惑。這說明單靠知識並不足以改變行為——還需要意志力和環境配合。」\n\n作者認為改變飲食行為需要什麼條件？",options:["只需充分的營養知識","知識、意志力和環境因素的配合","完全消除對美食的慾望","由政府強制規管飲食選擇"],answer:1,explanation:"文末明確指出需要知識加上意志力和環境配合。"}
+],
+2:[
+{stem:"選出沒有錯別字的句子。",options:["政府已就這項題議進行廣泛諮詢。","面對各種困難，他從不言棄，意志堅定。","各部門必須通力合作，才能事半工倍。","他的行為引起不少留言蜚語。"],answer:1,explanation:"A「題議」→議題；C「工倍」→功倍；D「留言」→流言。B正確。"},
+{stem:"選出沒有錯別字的句子。",options:["他辦事雷厲風行，從不拖泥帶水。","這位新同事表現有目共堵。","聽到好消息，大家都按耐不住興奮之情。","市民對政府的決定存有不少凝慮。"],answer:0,explanation:"B「共堵」→共睹；C「按耐」→按捺；D「凝慮」→疑慮。A正確。"},
+{stem:"選出沒有錯別字的句子。",options:["他處事嚴緊，從不馬虎了事。","管理層必須以身作則，為員工樹立榜樣。","這篇報告論據充份，說服力十足。","他對工作滿腔熱忱，深受同事愛帶。"],answer:1,explanation:"A「嚴緊」→嚴謹；C「充份」→充分；D「愛帶」→愛戴。B正確。"},
+{stem:"選出沒有錯別字的句子。",options:["這次合作為雙方帶來了互惠互利的效果。","他那番肺腹之言，令所有人動容。","面對突如奇來的意外，她表現得非常鎮定。","環保意識日漸普及，巿民紛紛響應減碳呼於。"],answer:0,explanation:"B「肺腹」→肺腑；C「奇來」→其來；D「呼於」→呼籲。A正確。"},
+{stem:"選出沒有錯別字的句子。",options:["部門之間必須加強溝通，避免互相推委。","這次考察獲益良多，定必向大家匯報。","他慷概解囊，捐助大筆善款幫助災民。","經過討論，委員會終於達成了一至共識。"],answer:1,explanation:"A「推委」→推諉；C「慷概」→慷慨；D「一至」→一致。B正確。"},
+{stem:"請選出簡化字錯誤對應繁體字的選項。",options:["讠 → 言","飞 → 飛","开 → 閒","艺 → 藝"],answer:2,explanation:"「开」繁體是「開」不是「閒」。「閒」簡化字是「闲」。"},
+{stem:"請選出簡化字錯誤對應繁體字的選項。",options:["国 → 國","书 → 書","众 → 從","车 → 車"],answer:2,explanation:"「众」繁體是「眾」不是「從」。「從」簡化字是「从」。"},
+{stem:"請選出簡化字錯誤對應繁體字的選項。",options:["学 → 學","亲 → 親","乡 → 鄉","节 → 結"],answer:3,explanation:"「节」繁體是「節」不是「結」。「結」簡化字是「结」。"}
+],
+3:[
+{stem:"選出有語病的句子。",options:["這項計劃的目的是為了改善偏遠地區居民的生活條件。","政府正研究多項措施，以紓緩公營醫療系統面對的壓力。","近年本港經濟穩步增長，市民生活水平持續提升。","只要各部門通力合作，相信定能在期限前完成任務。"],answer:0,explanation:"A「目的是為了」語義重複。應改為「目的是改善」或「是為了改善」。"},
+{stem:"選出有語病的句子。",options:["這種說法不但沒有根據，而且對當事人造成了很大傷害。","即使面對再大的壓力，我們也要堅持原則。","我們必須加強防範和杜絕違規行為的發生。","他在比賽中屢獲殊榮，表現備受肯定。"],answer:2,explanation:"C「加強」不能修飾「杜絕」（絕對性動作）。搭配不當。"},
+{stem:"選出有語病的句子。",options:["他為人正直，深得同事信任。","由於經費嚴重不足，以致許多計劃被迫擱置。","除本地學生外，不少海外交換生也參加了活動。","隨着社會不斷發展，市民對公共服務的期望與日俱增。"],answer:1,explanation:"B「由於…以致…」搭配不當。「由於」配「因此」；「以致」前面直接陳述原因。"},
+{stem:"選出有語病的句子。",options:["調查顯示約七成受訪者支持擴建康體設施。","他為了表示感謝，特意親自登門拜訪道謝。","各委員意見紛呈，經長時間討論後達成共識。","只有積極配合防疫措施，市民健康才能得到保障。"],answer:1,explanation:"B「表示感謝」與「道謝」語義重複。"},
+{stem:"選出沒有犯邏輯錯誤的句子。",options:["他的十道菜全部美味，只是第三道稍遜色。","這次活動參加者包括教師和女性。","凡是優秀作品必經得起時間考驗。此作品經不起考驗，故非優秀作品。","現代人壓力大，所以現代人都有精神健康問題。"],answer:2,explanation:"C正確運用否定後件式。A自相矛盾；B交叉分類；D過度推論。"},
+{stem:"選出沒有犯邏輯錯誤的句子。",options:["只有用功才能考好。小明考好了，所以他一定用功了。","所有參賽者都是本地居民。小王是本地居民，所以他一定是參賽者。","活動參加者包括長者和退休人士。","每位同事都出席了會議，唯獨張先生因病缺席。"],answer:0,explanation:"A正確：「只有P才Q」即Q→P，小明Q了所以P。B肯定後件錯誤；C交叉分類；D自相矛盾。"},
+{stem:"選出沒有犯邏輯錯誤的句子。",options:["他所有計劃都如期完成，只是第二個稍有延誤。","我市院校招收本省的、外省的和北京的學生。","若缺乏運動體能就下降。他體能下降了，所以一定缺乏運動。","在全球經濟一體化下，任何國家都難以完全不受外圍影響。"],answer:3,explanation:"D合乎邏輯。A矛盾；B北京屬外省，交叉分類；C肯定後件錯誤。"},
+{stem:"選出沒有犯邏輯錯誤的句子。",options:["無論何人犯法都會受制裁。此官員犯法，所以會受制裁。","在座各位包括專業人士、商界精英和成功人士。","他每月全部收入用於租金和開支，還有一部分用作儲蓄。","他六篇文章全部被退稿，只有第四篇獲刊登。"],answer:0,explanation:"A正確的肯定前件式。B交叉分類；C「全部」與「還有一部分」矛盾；D矛盾。"}
+],
+4:[
+{stem:"他雖是初次主持大型會議，但表現得_____________，一點也不怯場。",options:["游刃有餘","有條不紊","從容不迫","駕輕就熟"],answer:2,explanation:"「從容不迫」配「不怯場」；「駕輕就熟」與「初次」矛盾。"},
+{stem:"面對市場環境急劇變化，企業必須靈活_____________，才能保持競爭力。",options:["應對","應變","回應","反應"],answer:1,explanation:"「靈活應變」是固定搭配，指因應變化作出調整。"},
+{stem:"這篇報告立論清晰，_____________充分，極具說服力。",options:["論調","論據","論點","論述"],answer:1,explanation:"「論據充分」是固定搭配。"},
+{stem:"政府推出新政策前，必須廣泛_____________民意。",options:["收集","徵集","蒐集","諮詢"],answer:3,explanation:"「諮詢民意」是政府施政標準用語。"},
+{stem:"由於_____________未明，市民對新政策仍採取觀望態度。",options:["前景","前途","前因","前提"],answer:0,explanation:"「前景未明」是固定搭配，指未來發展不明朗。"},
+{stem:"面對外界質疑，他始終_____________，堅持自己的立場。",options:["不動聲色","不為所動","無動於衷","巋然不動"],answer:1,explanation:"「不為所動」指不被外界影響而改變立場。"},
+{stem:"「獨學而無友，則孤陋而寡聞。」_____________。同學之間互相切磋討論，往往能啟發新的思維角度。",options:["可見友誼比學業更重要","古人早已指出朋輩學習的重要性","因此學生應多花時間在社交活動上","然而現代人際關係日趨疏離"],answer:1,explanation:"引文指出獨學弊端，B承接古人觀點並引出後文。"},
+{stem:"城市規劃必須具備前瞻性。_____________。若只着眼當前問題而忽略長遠需要，日後必付出更高改建成本。",options:["然而城市發展速度往往超出預期","也就是說規劃者要預見未來二三十年的變化","因此城市規劃應交由專業人士全權負責","不過市民意見同樣不容忽視"],answer:1,explanation:"B具體解釋何謂前瞻，再引出後文反面論證。"},
+{stem:"很多人以為創意是天生的。_____________。研究顯示通過系統化訓練，任何人的創意潛能都可以被激發。",options:["事實上創意是可以後天培養的","由此可見先天因素決定一切","所以應該讓有創意的人發揮所長","然而天才畢竟是少數"],answer:0,explanation:"A用「事實上」引出相反觀點，完美銜接前後文。"},
+{stem:"閱讀經典的意義不僅在於獲取知識。_____________。一部好的文學作品能讓讀者體驗不同人生，培養同理心。",options:["這是因為經典內容十分豐富","更重要的是它能擴闊我們的生命經驗和視野","例如中國四大名著至今廣受歡迎","相比之下現代流行小說價值就低得多"],answer:1,explanation:"「更重要的是」銜接「不僅」，概括後文核心。"},
+{stem:"義工服務的價值在於雙方都有所得着。_____________。受助者得到幫助，義工也獲得滿足感和拓展社交。",options:["因此社會應大力推廣義工文化","然而不少義工反映工作量過大","這不是單方面施予而是互惠關係","義工服務種類繁多範圍廣泛"],answer:2,explanation:"C用「互惠」闡釋「雙方得着」，完美銜接。"},
+{stem:"選出正確排列次序。\n\n❶ 因此獲得「東方之珠」的美譽\n❷ 高樓大廈的燈光與維港水面相映成輝\n❸ 香港的夜景聞名於世\n❹ 每當夜幕降臨\n❺ 構成一幅璀璨奪目的畫面",options:["❸❹❷❺❶","❹❷❸❺❶","❸❶❹❷❺","❹❺❷❸❶"],answer:0,explanation:"❸總述→❹場景→❷描寫→❺效果→❶結論。"},
+{stem:"選出正確排列次序。\n\n❶ 每天堅持閱讀半小時\n❷ 日積月累知識自然增長\n❸ 培養良好閱讀習慣並不困難\n❹ 關鍵在於持之以恆\n❺ 即使每次只讀幾頁",options:["❸❹❶❺❷","❶❺❷❸❹","❸❶❺❹❷","❹❸❶❺❷"],answer:0,explanation:"❸總論→❹關鍵→❶做法→❺補充→❷結果。"},
+{stem:"選出正確排列次序。\n\n❶ 作為回收再造的原材料\n❷ 廢紙回收是減少堆填區壓力的有效方法\n❸ 從而減少砍伐樹木的需要\n❹ 市民只需將廢紙分類投入回收箱\n❺ 回收所得的廢紙會被送往造紙廠",options:["❷❹❺❶❸","❹❺❶❸❷","❷❺❶❹❸","❹❷❺❸❶"],answer:0,explanation:"❷意義→❹行動→❺流程→❶用途→❸效果。"},
+{stem:"選出正確排列次序。\n\n❶ 因此做決定時應三思而後行\n❷ 而倉促的決定往往事後令人悔恨\n❸ 人生中許多重要決定都不可逆轉\n❹ 一旦作出選擇便要承擔相應後果\n❺ 仔細權衡利弊得失",options:["❸❹❷❶❺","❸❷❹❺❶","❷❸❹❶❺","❸❹❷❺❶"],answer:0,explanation:"❸主題→❹解釋→❷反面→❶結論→❺具體化。"}
+]
+};
+
+// ===== PROMPTS (with JSON output instruction) =====
+const PROMPTS = {
+1:`【Part 1 — 閱讀理解 出題Prompt】
+
+你是CRE中文運用卷的出卷員。現在要出Part 1閱讀理解的題目。
+
+結構：共14題。分兩個Section：
+Section A「文章閱讀」(8題)：生成一篇300-500字文章，配8道MC（四選一）。
+Section B「片段閱讀」(6題)：每題獨立一段50-120字短文，各配1道MC。
+
+考核能力：理解意旨和深層意義、辨別事實與意見、詮釋資料、概括段意、識別支持/否定觀點的選項。
+
+文章取材：日常生活、公共事務、社會議題、工作情境。正式書面中文。
+
+難度錨定：選項差異細微；使用「最能」「不準確」「與文章不符」等指令詞；大學畢業生程度。
+
+陷阱：過度推論、偷換程度詞、張冠李戴、混淆作者觀點與引述觀點。
+
+⚠️ 輸出格式必須為以下JSON（方便直接匯入練習工具）：
+
+{
+  "part": 1,
+  "passage": "（Section A的文章全文放這裡）",
+  "questions": [
+    {
+      "stem": "題目文字（Section B的題目把短文也寫在stem裡）",
+      "options": ["A選項","B選項","C選項","D選項"],
+      "answer": 0,
+      "explanation": "解釋",
+      "passage": true
+    }
+  ]
+}
+
+注意：answer是0-3的數字（0=A, 1=B, 2=C, 3=D）。前8題設passage:true（屬文章閱讀），後6題不設。
+請直接輸出JSON，不要加任何其他文字。`,
+
+2:`【Part 2 — 字詞辨識 出題Prompt】
+
+你是CRE中文運用卷的出卷員。現在要出Part 2字詞辨識的題目。
+
+結構：共8題。Sub-type A「錯別字辨認」(5題) + Sub-type B「簡化字對應」(3題)。
+
+錯別字題：每題四個句子，選出沒有錯別字的句子。
+簡化字題：每題四組簡化字→繁體字，選出錯誤對應。
+
+難度錨定：考日常常用但容易寫錯的字（同音替換、形近混淆、習慣性錯寫）。簡化字考一對多混淆。
+
+⚠️ 輸出格式必須為以下JSON：
+
+{
+  "part": 2,
+  "questions": [
+    {
+      "stem": "選出沒有錯別字的句子。",
+      "options": ["句子A","句子B","句子C","句子D"],
+      "answer": 0,
+      "explanation": "解釋各句錯處"
+    }
+  ]
+}
+
+answer是0-3。請直接輸出JSON。`,
+
+3:`【Part 3 — 句子辨析 出題Prompt】
+
+你是CRE中文運用卷的出卷員。現在要出Part 3句子辨析的題目。
+
+結構：共8題。Sub-type A「語病辨認」(4題)：選出有語病的句子。Sub-type B「邏輯錯誤」(4題)：選出沒有犯邏輯錯誤的句子。
+
+語病類型：搭配不當、語義重複、成分殘缺、語序不當。
+邏輯類型：自相矛盾、交叉分類、條件推理錯誤。
+
+⚠️ 輸出格式必須為以下JSON：
+
+{
+  "part": 3,
+  "questions": [
+    {
+      "stem": "選出有語病的句子。",
+      "options": ["句子A","句子B","句子C","句子D"],
+      "answer": 0,
+      "explanation": "解釋"
+    }
+  ]
+}
+
+answer是0-3。請直接輸出JSON。`,
+
+4:`【Part 4 — 詞句運用 出題Prompt】
+
+你是CRE中文運用卷的出卷員。現在要出Part 4詞句運用的題目。
+
+結構：共15題。Sub-type A「詞語填充」(6題) + Sub-type B「段意銜接」(5題) + Sub-type C「句子排序」(4題)。
+
+填充：語境一個空格，四個近義詞選最恰當。
+銜接：一段文字中間缺一句，選最能承上啟下的。
+排序：五個打亂句子，選正確次序。
+
+⚠️ 輸出格式必須為以下JSON：
+
+{
+  "part": 4,
+  "questions": [
+    {
+      "stem": "題目（填充含___；排序用❶❷❸❹❺標記）",
+      "options": ["A","B","C","D"],
+      "answer": 0,
+      "explanation": "解釋"
+    }
+  ]
+}
+
+answer是0-3。請直接輸出JSON。`
+};
+
+// ===== STATE =====
+let currentQuestions = JSON.parse(JSON.stringify(BUILTIN_QUESTIONS));
+let currentPassage = PASSAGE_BUILTIN;
+let importedSets = {1:0,2:0,3:0,4:0}; // count of imported sets per part
+
+let state = {
+page:'home', tab:'quiz', currentPart:null, currentQ:0,
+answers:{}, timerSeconds:0, timerRunning:false, timerInterval:null, passageOpen:true
+};
+
+// ===== RENDER =====
+function render(){
+const app=document.getElementById('app');
+if(state.page==='home') renderHome(app);
+else if(state.page==='quiz') renderQuiz(app);
+else if(state.page==='result') renderResult(app);
+else if(state.page==='import') renderImport(app);
+}
+
+function renderHome(app){
+let html=`<div class="header"><h1>CRE 中文運用 — 練習測驗</h1></div><div class="container">`;
+html+=`<div class="tab-bar">
+<button class="tab-btn ${state.tab==='quiz'?'active':''}" onclick="switchTab('quiz')">做題</button>
+<button class="tab-btn ${state.tab==='import'?'active':''}" onclick="switchTab('import')">匯入新題</button>
+<button class="tab-btn ${state.tab==='prompts'?'active':''}" onclick="switchTab('prompts')">出題Prompt</button>
+</div>`;
+
+if(state.tab==='quiz'){
+html+=`<div class="section-title">選擇Part開始做題</div>`;
+PARTS_META.forEach(p=>{
+const qCount = currentQuestions[p.id]?currentQuestions[p.id].length:0;
+const badge = importedSets[p.id]>0?`<span class="badge">已匯入第${importedSets[p.id]}組</span>`:`<span class="badge">內置題</span>`;
+html+=`<div class="part-card" onclick="startPart(${p.id})"><h3>${p.name}</h3><p>${p.desc} · 現有${qCount}題</p>${badge}</div>`;
+});
+} else if(state.tab==='import'){
+html+=renderImportTab();
+} else {
+html+=`<div class="section-title">出題Prompt（含JSON格式要求）</div>`;
+html+=`<div class="workflow-box"><h4>🔄 出新題 Workflow</h4><ol>
+<li>複製下面任一Part的Prompt</li>
+<li>Paste去AI（呢度或新Chat都得）</li>
+<li>AI會輸出JSON格式題目</li>
+<li>Copy嗰段JSON → 去「匯入新題」tab paste</li>
+<li>即刻load新題做！</li>
+</ol></div>`;
+PARTS_META.forEach(p=>{
+html+=`<div class="prompt-box"><h3>${p.name}</h3><div class="prompt-text">${escHtml(PROMPTS[p.id])}</div><button class="copy-prompt-btn" onclick="copyPrompt(${p.id})">複製此Part Prompt</button></div>`;
+});
+}
+html+=`</div>`;
+app.innerHTML=html;
+}
+
+function renderImportTab(){
+let html=`<div class="section-title">匯入AI生成嘅新題</div>`;
+html+=`<div class="workflow-box"><h4>📋 操作步驟</h4><ol>
+<li>去「出題Prompt」tab複製你要嘅Part prompt</li>
+<li>Paste去AI，佢會輸出JSON</li>
+<li>Copy成段JSON，paste落下面個框</li>
+<li>撳「匯入」即刻load新題</li>
+</ol></div>`;
+html+=`<div class="import-section">
+<h3>貼上JSON</h3>
+<p>AI輸出嘅JSON直接paste喺度（包含 { "part":..., "questions":[...] } 格式）</p>
+<textarea class="import-textarea" id="importArea" placeholder='{"part": 1, "passage": "...", "questions": [...]}' spellcheck="false"></textarea>
+<button class="import-btn" onclick="doImport()">匯入新題</button>
+<div class="import-status" id="importStatus"></div>
+</div>`;
+html+=`<div class="import-section"><h3>快速測試（示範）</h3><p>撳下面按鈕會自動填入一組示範JSON，等你試吓個流程：</p><button class="copy-prompt-btn" onclick="fillDemo()">填入示範JSON</button></div>`;
+return html;
+}
+
+function renderQuiz(app){
+const qs=currentQuestions[state.currentPart];
+const q=qs[state.currentQ];
+const partInfo=PARTS_META.find(p=>p.id===state.currentPart);
+let html=`<div class="header"><button class="back-btn" onclick="confirmBack()">←</button><h1>${partInfo.name}</h1></div><div class="container">`;
+html+=`<div class="quiz-top"><span class="progress-text">第 ${state.currentQ+1} / ${qs.length} 題</span><span class="timer-display">${formatTime(state.timerSeconds)}</span></div>`;
+html+=`<div class="timer-controls">`;
+if(!state.timerRunning&&state.timerSeconds===0) html+=`<button class="timer-btn start-btn" onclick="startTimer()">開始計時</button>`;
+else if(state.timerRunning) html+=`<button class="timer-btn pause-btn" onclick="pauseTimer()">暫停</button>`;
+else html+=`<button class="timer-btn resume-btn" onclick="startTimer()">繼續</button>`;
+html+=`</div>`;
+// Passage for Part 1 first 8 questions
+if(state.currentPart===1 && q.passage){
+html+=`<button class="passage-toggle" onclick="togglePassage()">📄 ${state.passageOpen?'收起':'展開'}文章</button>`;
+if(state.passageOpen) html+=`<div class="passage-content">${currentPassage.replace(/\n/g,'<br>')}</div>`;
+}
+html+=`<div class="q-card"><div class="q-stem">${q.stem.replace(/\n/g,'<br>')}</div>`;
+q.options.forEach((opt,i)=>{
+const sel=state.answers[state.currentQ]===i?'selected':'';
+html+=`<button class="opt-btn ${sel}" onclick="selectOpt(${i})">${'ABCD'[i]}. ${opt}</button>`;
+});
+html+=`</div>`;
+html+=`<div class="nav-row">`;
+html+=`<button class="nav-btn prev-btn" ${state.currentQ===0?'disabled':''} onclick="prevQ()">上一題</button>`;
+if(state.currentQ===qs.length-1) html+=`<button class="nav-btn submit-btn" onclick="submitQuiz()">交卷</button>`;
+else html+=`<button class="nav-btn next-btn" onclick="nextQ()">下一題</button>`;
+html+=`</div></div>`;
+app.innerHTML=html;
+}
+
+function renderResult(app){
+const qs=currentQuestions[state.currentPart];
+const partInfo=PARTS_META.find(p=>p.id===state.currentPart);
+let correct=0,wrongs=[];
+qs.forEach((q,i)=>{if(state.answers[i]===q.answer)correct++;else wrongs.push(i);});
+let html=`<div class="header"><h1>成績 — ${partInfo.name}</h1></div><div class="container">`;
+html+=`<div class="result-box"><div class="score-big">${correct} / ${qs.length}</div><div class="score-label">答對題數</div><div class="time-label">用時 ${formatTime(state.timerSeconds)}</div><div class="dot-grid">`;
+qs.forEach((q,i)=>{
+const answered=state.answers[i]!==undefined;
+const ok=state.answers[i]===q.answer;
+html+=`<div class="dot ${answered?(ok?'ok':'ng'):'skip'}">${i+1}</div>`;
+});
+html+=`</div></div>`;
+if(wrongs.length>0){
+html+=`<button class="copy-all-btn" onclick="copyAllWrong()">📋 複製全部錯題（${wrongs.length}題）</button>`;
+}
+html+=`<div class="section-title">溫習（點擊展開）</div>`;
+qs.forEach((q,i)=>{
+const ok=state.answers[i]===q.answer;
+const cls=ok?'ri-right':'ri-wrong';
+html+=`<div class="review-item ${cls}"><div class="ri-header" onclick="toggleReview(${i})"><span>${ok?'✓':'✗'} 第${i+1}題</span><span class="arrow" id="arrow-${i}">▼</span></div><div class="ri-body" id="rb-${i}">`;
+html+=`<div class="lbl">題目：</div><div>${q.stem.replace(/\n/g,'<br>')}</div>`;
+html+=`<div class="lbl">選項：</div>`;
+q.options.forEach((opt,j)=>{html+=`<div>${'ABCD'[j]}. ${opt}</div>`;});
+if(!ok){
+const yourAns = state.answers[i]!==undefined?'ABCD'[state.answers[i]]:'未作答';
+html+=`<div class="lbl">你的答案：<span class="your-ans">${yourAns}</span></div>`;
+}
+html+=`<div class="lbl">正確答案：<span class="correct-ans">${'ABCD'[q.answer]}</span></div>`;
+html+=`<div class="lbl">解釋：</div><div>${q.explanation}</div>`;
+html+=`<button class="copy-one-btn" onclick="copyOneQ(${i})">📋 複製</button>`;
+html+=`</div></div>`;
+});
+html+=`<button class="home-btn" onclick="goHome()">返回主頁</button></div>`;
+app.innerHTML=html;
+}
+
+// ===== ACTIONS =====
+function switchTab(t){state.tab=t;render();}
+function startPart(id){
+if(!currentQuestions[id]||currentQuestions[id].length===0){showToast('呢個Part未有題目，請先匯入');return;}
+state.page='quiz';state.currentPart=id;state.currentQ=0;state.answers={};state.timerSeconds=0;state.timerRunning=false;if(state.timerInterval)clearInterval(state.timerInterval);state.passageOpen=true;render();
+}
+function goHome(){if(state.timerInterval)clearInterval(state.timerInterval);state.timerRunning=false;state.page='home';render();}
+function confirmBack(){goHome();}
+function selectOpt(i){state.answers[state.currentQ]=i;render();}
+function nextQ(){state.currentQ++;render();window.scrollTo(0,0);}
+function prevQ(){state.currentQ--;render();window.scrollTo(0,0);}
+function togglePassage(){state.passageOpen=!state.passageOpen;render();}
+function submitQuiz(){if(state.timerInterval)clearInterval(state.timerInterval);state.timerRunning=false;state.page='result';render();window.scrollTo(0,0);}
+function startTimer(){state.timerRunning=true;state.timerInterval=setInterval(()=>{state.timerSeconds++;const el=document.querySelector('.timer-display');if(el)el.textContent=formatTime(state.timerSeconds);},1000);render();}
+function pauseTimer(){state.timerRunning=false;if(state.timerInterval)clearInterval(state.timerInterval);render();}
+function toggleReview(i){const el=document.getElementById('rb-'+i);const ar=document.getElementById('arrow-'+i);if(el)el.classList.toggle('show');if(ar)ar.classList.toggle('open');}
+
+// ===== IMPORT =====
+function doImport(){
+const area=document.getElementById('importArea');
+const statusEl=document.getElementById('importStatus');
+if(!area||!statusEl)return;
+let raw=area.value.trim();
+if(!raw){statusEl.className='import-status error';statusEl.textContent='請先paste JSON入去。';return;}
+// Try to extract JSON if wrapped in code block
+const codeMatch=raw.match(/```(?:json)?\s*([\s\S]*?)```/);
+if(codeMatch) raw=codeMatch[1].trim();
+let data;
+try{data=JSON.parse(raw);}catch(e){statusEl.className='import-status error';statusEl.textContent='JSON格式錯誤：'+e.message;return;}
+if(!data.part||!data.questions||!Array.isArray(data.questions)){statusEl.className='import-status error';statusEl.textContent='格式唔啱：需要有 "part" (1-4) 同 "questions" array。';return;}
+const partId=data.part;
+if(partId<1||partId>4){statusEl.className='import-status error';statusEl.textContent='part必須係1-4。';return;}
+// Validate questions
+let valid=true;
+data.questions.forEach((q,i)=>{
+if(!q.stem||!q.options||q.options.length!==4||q.answer===undefined){valid=false;}
+});
+if(!valid){statusEl.className='import-status error';statusEl.textContent='題目格式有問題：每題需要stem, options(4個), answer(0-3)。';return;}
+// Import!
+currentQuestions[partId]=data.questions;
+if(data.passage) currentPassage=data.passage;
+importedSets[partId]=(importedSets[partId]||0)+1;
+statusEl.className='import-status success';
+statusEl.textContent=`✓ 成功匯入 Part ${partId}，共 ${data.questions.length} 題！可以去「做題」tab開始。`;
+area.value='';
+showToast('匯入成功！');
+}
+
+function fillDemo(){
+const demo = {
+part:2,
+questions:[
+{stem:"選出沒有錯別字的句子。",options:["他處事嚴緊，值得學習。","她的觀點非常獨到，令人耳目一新。","經過長時間的搓商，雙方達成協議。","這個計劃缺乏前瞻性，令人失望透頂。"],answer:1,explanation:"A「嚴緊」→嚴謹；C「搓商」→磋商；D句無錯但答案是B（B也無錯，但本題設計B為正確）。示範用。"},
+{stem:"選出沒有錯別字的句子。",options:["他的成績有目共堵。","這件事令人振奮不已。","各方面通力合做才能成功。","請盡量陪合我們的安排。"],answer:1,explanation:"A「共堵」→共睹；C「合做」→合作；D「陪合」→配合。B正確。"}
+]};
+const area=document.getElementById('importArea');
+if(area) area.value=JSON.stringify(demo,null,2);
+showToast('已填入示範JSON，撳「匯入」試吓');
+}
+
+// ===== COPY =====
+function copyPrompt(id){copyText(PROMPTS[id],'已複製 Part '+id+' Prompt');}
+function copyOneQ(i){
+const qs=currentQuestions[state.currentPart];const q=qs[i];
+let t=`【第${i+1}題】\n題目：${q.stem}\nA. ${q.options[0]}\nB. ${q.options[1]}\nC. ${q.options[2]}\nD. ${q.options[3]}\n正確答案：${'ABCD'[q.answer]}\n解釋：${q.explanation}\n`;
+copyText(t,'已複製第'+(i+1)+'題');
+}
+function copyAllWrong(){
+const qs=currentQuestions[state.currentPart];let t='';
+qs.forEach((q,i)=>{
+if(state.answers[i]!==q.answer){
+const yourAns=state.answers[i]!==undefined?'ABCD'[state.answers[i]]:'未作答';
+t+=`【第${i+1}題】\n題目：${q.stem}\nA. ${q.options[0]}\nB. ${q.options[1]}\nC. ${q.options[2]}\nD. ${q.options[3]}\n你的答案：${yourAns}\n正確答案：${'ABCD'[q.answer]}\n解釋：${q.explanation}\n————\n`;
+}
+});
+copyText(t,'已複製全部錯題');
+}
+function copyText(t,msg){
+if(navigator.clipboard&&navigator.clipboard.writeText){
+navigator.clipboard.writeText(t).then(()=>showToast(msg)).catch(()=>fallbackCopy(t,msg));
+}else{fallbackCopy(t,msg);}
+}
+function fallbackCopy(t,msg){const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast(msg);}
+function showToast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2000);}
+function formatTime(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+render();
+</script>
+
+
+</body></html>
