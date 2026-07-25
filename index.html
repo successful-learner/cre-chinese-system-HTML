@@ -61,6 +61,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 .btn-wrn{background:var(--wrn);color:#fff}
 .btn-o{background:#fff;color:var(--pri);border:2px solid var(--pri-l)}
 .btn-g{background:var(--g100);color:var(--g600)}
+.btn-cloud{background:linear-gradient(135deg,#4285f4,#34a853);color:#fff}
+.btn-cloud:hover:not(:disabled){background:linear-gradient(135deg,#3367d6,#2d8e47)}
 .btn-sm{padding:7px 12px;font-size:12px;width:auto;min-height:32px;border-radius:var(--rx)}
 .info-box{border-radius:var(--rs);padding:12px 14px;margin-bottom:12px;font-size:12px;line-height:1.7}
 .info-box h4{font-size:12px;margin-bottom:3px}
@@ -73,7 +75,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 .textarea{width:100%;border:2px solid var(--g200);border-radius:var(--rs);padding:10px;font-size:12px;font-family:'SF Mono',monospace;resize:vertical;transition:border-color .2s;line-height:1.5}
 .textarea:focus{border-color:var(--pri);outline:none}
 .prompt-box{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rs);padding:10px;font-size:11px;max-height:140px;overflow-y:auto;white-space:pre-wrap;line-height:1.5;font-family:monospace;margin-bottom:8px}
-/* Quiz */
 .quiz-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 0}
 .timer-area{display:flex;align-items:center;gap:5px}
 .timer-n{font-size:20px;font-weight:800;color:var(--pri);font-variant-numeric:tabular-nums}
@@ -100,7 +101,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 .opt-btn:hover{border-color:var(--pri-b);background:var(--pri-bg)}
 .opt-btn.sel{border-color:var(--pri);background:var(--pri-l);font-weight:600}
 .nav-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
-/* Result */
 .result-hero{background:linear-gradient(135deg,var(--pri),#1e3a8a);border-radius:var(--r);padding:24px 18px;text-align:center;color:#fff;margin-bottom:14px;box-shadow:var(--shl)}
 .result-hero.fp{background:linear-gradient(135deg,var(--pur),#1e3a8a)}
 .result-hero .big{font-size:44px;font-weight:900}
@@ -113,7 +113,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 .bd-i{background:rgba(255,255,255,.12);border-radius:var(--rs);padding:8px;text-align:center}
 .bd-i .bl{font-size:9px;opacity:.7}.bd-i .bs{font-size:15px;font-weight:800}
 .bank-msg{background:var(--suc-bg);border:1px solid var(--suc-l);border-radius:var(--rs);padding:10px 12px;margin-bottom:12px;font-size:12px;color:var(--suc)}
-/* Review Item */
 .ri{background:#fff;border-radius:var(--rs);margin-bottom:6px;border:1px solid var(--g100);overflow:hidden}
 .ri.rw{border-left:3px solid var(--err)}.ri.rr{border-left:3px solid var(--suc)}.ri.ru{border-left:3px solid var(--wrn)}
 .ri-h{padding:10px 12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:12px;font-weight:600}
@@ -132,7 +131,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 .ri-del:hover{color:var(--err)}
 .psg-in-bank{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rx);padding:10px;margin-top:6px;font-size:12px;line-height:1.8;max-height:150px;overflow-y:auto;white-space:pre-wrap}
 .psg-label{display:inline-block;background:var(--pri-bg);color:var(--pri);font-size:10px;font-weight:600;padding:1px 6px;border-radius:4px;margin-bottom:4px}
-/* History */
 .hi-card{background:#fff;border-radius:var(--rs);padding:12px 14px;margin-bottom:6px;box-shadow:0 1px 2px rgba(0,0,0,.04);border:1px solid var(--g100);cursor:pointer;transition:.15s}
 .hi-card:hover{border-color:var(--pri-l);box-shadow:var(--sh)}
 .hi-card.fp{border-left:3px solid var(--pur)}
@@ -154,6 +152,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 .sub-tab.on.unc-tab{color:var(--wrn)}
 .save-info{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rs);padding:10px 12px;font-size:11px;line-height:1.7;color:var(--g600);margin:8px 0}
 .save-info strong{color:var(--g800)}
+.cloud-status{padding:10px 14px;border-radius:var(--rs);font-size:12px;margin:10px 0;display:none}
+.cloud-status.show{display:block}
+.cloud-status.ok{background:var(--suc-bg);border:1px solid var(--suc-l);color:var(--suc)}
+.cloud-status.err{background:var(--err-bg);border:1px solid var(--err-l);color:var(--err)}
+.cloud-status.loading{background:var(--wrn-bg);border:1px solid var(--wrn-l);color:var(--wrn)}
 .kbd-hint{display:none;font-size:10px;color:var(--g400);margin-top:6px;text-align:center}
 @media(min-width:1024px){.kbd-hint{display:block}}
 </style>
@@ -163,6 +166,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 <div class="toast" id="toast"></div>
 <div class="modal-ov" id="mo"><div class="modal-bx"><h3 id="mT"></h3><p id="mM"></p><div class="modal-btns"><button class="btn btn-o" onclick="closeM()">取消</button><button class="btn btn-e" id="mC">確定</button></div></div></div>
 <script>
+// ===== CLOUD SAVE CONFIG =====
+const CLOUD_URL = 'https://script.google.com/macros/s/AKfycbwSlrUxnW6MZw8SFdkwa1UF07QykfUM49xsFntlTO5Z2j1qViA3vSMhq1X3hgmjvW07/exec';
+const CLOUD_TOKEN = 'mySecret2026';
+const CLOUD_FILE = 'cre_chinese_save.txt';
+
 function showM(t,m,cb,ok){document.getElementById('mT').textContent=t;document.getElementById('mM').textContent=m;const b=document.getElementById('mC');b.textContent=ok||'確定';b.onclick=()=>{closeM();cb()};document.getElementById('mo').classList.add('show')}
 function closeM(){document.getElementById('mo').classList.remove('show')}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400)}
@@ -257,7 +265,6 @@ let UB={1:[],2:[],3:[],4:[]};
 let HIST=[];
 let PC=0;
 
-// Track passage versions: [{text, importedAt, label}]
 let PSG_HIST=[{text:PSG_BUILTIN,importedAt:'內置',label:'內置文章'}];
 
 let S={
@@ -266,7 +273,7 @@ part:null,qi:0,ans:{},flags:{},
 tSec:0,tOn:false,_tID:null,
 psgOpen:true,mode:'normal',qs:null,
 isFP:false,mapOpen:false,_bu:null,viewRec:null,
-_curPsg:PSG_BUILTIN // current active passage during quiz
+_curPsg:PSG_BUILTIN
 };
 
 // ===== TIMER =====
@@ -288,7 +295,7 @@ else renderHome(app);
 function renderHome(app){
 const tabs=['quiz','wrong','history','import','prompts','save'];
 const tNames=['做題','題庫','記錄','匯入','Prompt','存檔'];
-let h=`<div class="header"><h1>CRE 中文運用 — 練習系統</h1><div class="ver">v8.3</div></div><div class="container">`;
+let h=`<div class="header"><h1>CRE 中文運用 — 練習系統</h1><div class="ver">v8.3 Cloud</div></div><div class="container">`;
 h+=`<div class="tab-bar">${tabs.map((t,i)=>`<button class="tab-btn ${S.tab===t?'active':''}" onclick="S.tab='${t}';R()">${tNames[i]}</button>`).join('')}</div>`;
 if(S.tab==='quiz')h+=tabQuiz();
 else if(S.tab==='wrong')h+=tabWrong();
@@ -397,18 +404,79 @@ return h;
 }
 function cpP(k){copyTxt(PROMPTS[k]);toast('Prompt已複製')}
 
-// ===== SAVE TAB =====
+// ===== SAVE TAB (with Cloud) =====
 function tabSave(){
 const saveData=buildSave();
 const sz=new Blob([JSON.stringify(saveData)]).size;
-let h=`<div class="card"><h3 style="font-size:14px;margin-bottom:10px">📤 導出存檔</h3>`;
-h+=`<div class="save-info"><strong>存檔包含：</strong><br>• ✅ 全部做題記錄（每題題目+答案+解釋+文章）<br>• ✅ 錯題庫（全部詳情+所屬文章）<br>• ✅ 不確定題庫<br>• ✅ 現有題庫<br>• ✅ 文章歷史（所有用過嘅文章）<br><br>📦 存檔大小：<strong>${fmtB(sz)}</strong></div>`;
-h+=`<button class="btn btn-s" onclick="doExport()">📋 複製存檔（一鍵導出）</button>`;
-h+=`<div style="font-size:11px;color:var(--g400);margin-top:6px;text-align:center">建議定期導出，Paste去備忘錄/Notes保存</div></div>`;
-h+=`<div class="card"><h3 style="font-size:14px;margin-bottom:10px;color:var(--pri)">📥 讀檔還原</h3>`;
+let h='';
+// Cloud section
+h+=`<div class="card" style="border-left:4px solid var(--suc)"><h3 style="font-size:14px;margin-bottom:6px;color:var(--suc)">☁️ 雲端存檔（Google Drive）</h3>`;
+h+=`<div class="info-box ib-g" style="margin-bottom:10px">✅ 已連接 · 檔案: ${CLOUD_FILE} · 大小: ${fmtB(sz)}</div>`;
+h+=`<button class="btn btn-cloud" style="margin-bottom:8px" onclick="cloudSave()">☁️ 一鍵雲端儲存</button>`;
+h+=`<button class="btn btn-p" onclick="cloudLoad()">📥 從雲端讀取</button>`;
+h+=`<div class="cloud-status" id="cloudSt"></div>`;
+h+=`</div>`;
+// Manual section
+h+=`<div class="card"><h3 style="font-size:14px;margin-bottom:10px">📤 手動導出（後備）</h3>`;
+h+=`<div class="save-info"><strong>存檔包含：</strong><br>• ✅ 全部做題記錄（每題題目+答案+解釋+文章）<br>• ✅ 錯題庫（全部詳情+所屬文章）<br>• ✅ 不確定題庫<br>• ✅ 現有題庫<br>• ✅ 文章歷史<br><br>📦 大小：<strong>${fmtB(sz)}</strong></div>`;
+h+=`<button class="btn btn-o" onclick="doExport()">📋 複製存檔JSON</button>`;
+h+=`<div style="font-size:11px;color:var(--g400);margin-top:6px;text-align:center">Paste去備忘錄/Notes保存</div></div>`;
+h+=`<div class="card"><h3 style="font-size:14px;margin-bottom:10px;color:var(--pri)">📥 手動讀取</h3>`;
 h+=`<textarea class="textarea" style="height:100px" id="loadA" placeholder="Paste存檔JSON到此處"></textarea>`;
 h+=`<button class="btn btn-p" style="margin-top:10px" onclick="doLoad()">讀檔還原</button></div>`;
 return h;
+}
+
+// ===== CLOUD SAVE FUNCTIONS =====
+function cloudSave(){
+if(!CLOUD_URL){toast('未設定Cloud URL');return}
+const saveData=JSON.stringify(buildSave());
+const statusEl=document.getElementById('cloudSt');
+if(statusEl){statusEl.className='cloud-status show loading';statusEl.textContent='⏳ 儲存中...';}
+fetch(CLOUD_URL,{method:'POST',body:JSON.stringify({token:CLOUD_TOKEN,file:CLOUD_FILE,data:saveData})})
+.then(r=>r.json())
+.then(res=>{
+if(res.ok){
+if(statusEl){statusEl.className='cloud-status show ok';statusEl.textContent='✅ 雲端已儲存! '+nowStr()+' ('+res.bytes+' bytes)';}
+toast('☁️ 雲端已儲存!');
+}else{
+if(statusEl){statusEl.className='cloud-status show err';statusEl.textContent='❌ '+res.msg;}
+toast('儲存失敗: '+res.msg);
+}
+}).catch(err=>{
+if(statusEl){statusEl.className='cloud-status show err';statusEl.textContent='❌ '+err.message;}
+toast('儲存失敗');
+});
+}
+
+function cloudLoad(){
+if(!CLOUD_URL){toast('未設定Cloud URL');return}
+const statusEl=document.getElementById('cloudSt');
+if(statusEl){statusEl.className='cloud-status show loading';statusEl.textContent='⏳ 讀取中...';}
+fetch(CLOUD_URL+'?token='+encodeURIComponent(CLOUD_TOKEN)+'&file='+encodeURIComponent(CLOUD_FILE))
+.then(r=>r.json())
+.then(res=>{
+if(res.ok){
+let d;try{d=JSON.parse(res.data)}catch(e){
+if(statusEl){statusEl.className='cloud-status show err';statusEl.textContent='❌ 資料損壞';}
+toast('資料損壞');return;
+}
+applyLoad(d);
+if(statusEl){statusEl.className='cloud-status show ok';statusEl.textContent='✅ 雲端已讀取! '+nowStr();}
+toast('☁️ 雲端已讀取!');R();
+}else{
+if(statusEl){statusEl.className='cloud-status show err';statusEl.textContent='⚠️ '+res.msg;}
+toast(res.msg);
+}
+}).catch(err=>{
+if(statusEl){statusEl.className='cloud-status show err';statusEl.textContent='❌ '+err.message;}
+toast('讀取失敗');
+});
+}
+
+function applyLoad(d){
+if(d.wb)WB=d.wb;if(d.ub)UB=d.ub;if(d.hist)HIST=d.hist;if(d.cq)CQ=d.cq;if(d.psg)PSG=d.psg;if(d.imp)IMP=d.imp;if(d.pc!==undefined)PC=d.pc;if(d.psgHist)PSG_HIST=d.psgHist;
+for(let i=1;i<=4;i++){if(!WB[i])WB[i]=[];if(!UB[i])UB[i]=[]}
 }
 
 // ===== QUIZ =====
@@ -430,7 +498,6 @@ h+=`<div class="${cls}" onclick="S.qi=${i};R()">${i+1}</div>`;
 });h+=`</div>`;
 }
 if(S.isFP&&q._part){const prev=S.qi>0?qs[S.qi-1]:null;if(!prev||prev._part!==q._part){const pm=PM.find(p=>p.id===q._part);h+=`<div class="part-div"><h4>${pm?pm.icon:''} ${pm?pm.name:''}</h4></div>`;}}
-// ★ FIX: show passage for ALL Part 1 questions (not just q.passage===true)
 if(q._part===1&&S._curPsg){
 h+=`<button class="psg-toggle" onclick="S.psgOpen=!S.psgOpen;R()">📄 ${S.psgOpen?'收起':'展開'}閱讀文章</button>`;
 if(S.psgOpen)h+=`<div class="psg-box">${S._curPsg.replace(/\n/g,'<br>')}</div>`;
@@ -519,7 +586,6 @@ function startReview(pid,bank){
 const src=bank==='wrong'?WB:UB;
 if(!src[pid]||!src[pid].length){toast('冇題目');return}
 let qs=JSON.parse(JSON.stringify(src[pid]));qs.forEach(q=>q._part=pid);
-// Use stored passage from first question if available
 S._curPsg=(qs[0]&&qs[0]._passage)||PSG;
 beginQ(qs,'review',pid,false);
 }
@@ -542,7 +608,6 @@ R();
 function submitQ(){
 tStop();const qs=S.qs;const submitTime=nowStr();
 let cor=0,added=0,removed=0,uncAdded=0;
-// Build passage label
 const psgLabel=submitTime+' 文章';
 qs.forEach((q,i)=>{
 const pid=q._part||S.part||1;if(pid<1||pid>4)return;
@@ -554,7 +619,6 @@ if(bi>=0){WB[pid].splice(bi,1);removed++}
 }else if(S.ans[i]!==undefined){
 if(bi<0){
 const entry={stem:q.stem,options:q.options,answer:q.answer,explanation:q.explanation||'',_part:pid,dateAdded:submitTime,yourAnswer:S.ans[i]};
-// ★ For Part 1: store the passage with the wrong question
 if(pid===1&&S._curPsg){entry._passage=S._curPsg;entry._psgLabel=psgLabel}
 WB[pid].push(entry);
 added++;
@@ -580,7 +644,7 @@ total:qs.length,
 correct:cor,
 time:S.tSec,
 isFP:S.isFP,
-passage:S._curPsg||'', // ★ store passage with history record
+passage:S._curPsg||'',
 questions:qs.map(q=>({stem:q.stem,options:q.options,answer:q.answer,explanation:q.explanation||'',_part:q._part,passage:q.passage||false})),
 answers:{...S.ans}
 });
@@ -641,8 +705,7 @@ function doLoad(){
 const area=document.getElementById('loadA');if(!area)return;
 let raw=area.value.trim();if(!raw){toast('請paste存檔');return}
 let d;try{d=JSON.parse(raw)}catch(e){toast('JSON格式錯誤');return}
-if(d.wb)WB=d.wb;if(d.ub)UB=d.ub;if(d.hist)HIST=d.hist;if(d.cq)CQ=d.cq;if(d.psg)PSG=d.psg;if(d.imp)IMP=d.imp;if(d.pc!==undefined)PC=d.pc;if(d.psgHist)PSG_HIST=d.psgHist;
-for(let i=1;i<=4;i++){if(!WB[i])WB[i]=[];if(!UB[i])UB[i]=[]}
+applyLoad(d);
 const qCount=Object.values(CQ).reduce((a,b)=>a+b.length,0);
 toast(`讀檔成功！${HIST.length}筆記錄 · ${qCount}題`);area.value='';R();
 }
