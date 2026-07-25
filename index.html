@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=5.0">
-<title>CRE中文運用 — 練習系統 v8.3</title>
+<title>CRE中文運用 — 練習系統 v9.2</title>
 <style>
 :root{
 --pri:#2563eb;--pri-d:#1d4ed8;--pri-dd:#1e40af;--pri-bg:#eff6ff;--pri-l:#dbeafe;--pri-b:#bfdbfe;
@@ -35,10 +35,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 .stat-card{background:#fff;border-radius:var(--r);padding:12px 6px;text-align:center;box-shadow:var(--sh);border:1px solid var(--g100)}
 .stat-num{font-size:22px;font-weight:800;color:var(--pri)}
 .stat-num.wrn{color:var(--wrn)}
+.stat-num.err{color:var(--err)}
 .stat-lbl{font-size:10px;color:var(--g400);margin-top:2px;font-weight:500}
 .sec-title{font-size:13px;font-weight:700;color:var(--g600);margin:18px 0 8px;display:flex;align-items:center;gap:6px}
 .sec-title::before{content:'';width:3px;height:14px;background:var(--pri);border-radius:2px}
-.sec-title .rt{margin-left:auto}
+.sec-title .rt{margin-left:auto;font-size:11px;color:var(--g400);font-weight:500}
 .part-card{background:#fff;border-radius:var(--r);padding:16px;margin-bottom:8px;box-shadow:var(--sh);border:1px solid var(--g100);cursor:pointer;transition:all .15s var(--ease);position:relative;overflow:hidden;border-left:4px solid var(--pri)}
 .part-card:hover{box-shadow:var(--shm);transform:translateY(-1px)}
 .part-card:active{transform:scale(.98)}
@@ -47,12 +48,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 .part-card.fp h3{color:var(--pur)}
 .part-card p{font-size:11px;color:var(--g400);margin-top:2px;padding-left:4px}
 .part-card .arrow{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--g300);font-size:16px}
-.badge{display:inline-block;font-size:10px;padding:2px 7px;border-radius:12px;font-weight:600;margin-top:4px;margin-right:3px}
-.badge-b{background:var(--pri-bg);color:var(--pri);border:1px solid var(--pri-l)}
-.badge-r{background:var(--err-bg);color:var(--err);border:1px solid var(--err-l)}
-.badge-g{background:var(--suc-bg);color:var(--suc);border:1px solid var(--suc-l)}
-.badge-w{background:var(--wrn-bg);color:var(--wrn);border:1px solid var(--wrn-l)}
-.badge-p{background:var(--pur-bg);color:var(--pur);border:1px solid var(--pur-l)}
 .btn{width:100%;padding:12px;border:none;border-radius:var(--rs);font-size:14px;font-weight:700;cursor:pointer;transition:.15s var(--ease);display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px}
 .btn:active{transform:scale(.97)}.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .btn-p{background:var(--pri);color:#fff}.btn-p:hover:not(:disabled){background:var(--pri-d)}
@@ -62,7 +57,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 .btn-o{background:#fff;color:var(--pri);border:2px solid var(--pri-l)}
 .btn-g{background:var(--g100);color:var(--g600)}
 .btn-cloud{background:linear-gradient(135deg,#4285f4,#34a853);color:#fff}
-.btn-cloud:hover:not(:disabled){background:linear-gradient(135deg,#3367d6,#2d8e47)}
 .btn-sm{padding:7px 12px;font-size:12px;width:auto;min-height:32px;border-radius:var(--rx)}
 .info-box{border-radius:var(--rs);padding:12px 14px;margin-bottom:12px;font-size:12px;line-height:1.7}
 .info-box h4{font-size:12px;margin-bottom:3px}
@@ -74,7 +68,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 .ib-p{background:var(--pur-bg);border:1px solid var(--pur-l);color:var(--pur)}
 .textarea{width:100%;border:2px solid var(--g200);border-radius:var(--rs);padding:10px;font-size:12px;font-family:'SF Mono',monospace;resize:vertical;transition:border-color .2s;line-height:1.5}
 .textarea:focus{border-color:var(--pri);outline:none}
-.prompt-box{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rs);padding:10px;font-size:11px;max-height:140px;overflow-y:auto;white-space:pre-wrap;line-height:1.5;font-family:monospace;margin-bottom:8px}
+.prompt-box{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rs);padding:10px;font-size:11px;max-height:200px;overflow-y:auto;white-space:pre-wrap;line-height:1.5;font-family:monospace;margin-bottom:8px}
 .quiz-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 0}
 .timer-area{display:flex;align-items:center;gap:5px}
 .timer-n{font-size:20px;font-weight:800;color:var(--pri);font-variant-numeric:tabular-nums}
@@ -89,7 +83,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 .qmap-toggle{width:100%;background:var(--g50);border:1px solid var(--g200);border-radius:var(--rs);padding:8px;text-align:center;font-size:11px;color:var(--g500);cursor:pointer;margin-bottom:10px;font-weight:600}
 .part-div{background:linear-gradient(135deg,var(--pri-bg),var(--pur-bg));border:1px solid var(--pri-l);border-radius:var(--r);padding:12px;margin-bottom:12px;text-align:center}
 .part-div h4{font-size:13px;font-weight:700;color:var(--pri-d)}
-.part-div p{font-size:11px;color:var(--g400);margin-top:2px}
 .psg-toggle{width:100%;background:var(--pri-bg);border:1px solid var(--pri-l);border-radius:var(--rs);padding:10px 14px;text-align:left;font-size:12px;color:var(--pri);cursor:pointer;font-weight:600;margin-bottom:10px}
 .psg-box{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rs);padding:14px;margin-bottom:14px;font-size:14px;line-height:2;max-height:240px;overflow-y:auto}
 .q-card{background:#fff;border-radius:var(--r);padding:18px;box-shadow:var(--sh);border:1px solid var(--g100);margin-bottom:12px}
@@ -130,7 +123,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 .ri-del{background:none;border:none;color:var(--g400);font-size:14px;cursor:pointer;padding:4px;margin-left:8px}
 .ri-del:hover{color:var(--err)}
 .psg-in-bank{background:var(--g50);border:1px solid var(--g200);border-radius:var(--rx);padding:10px;margin-top:6px;font-size:12px;line-height:1.8;max-height:150px;overflow-y:auto;white-space:pre-wrap}
-.psg-label{display:inline-block;background:var(--pri-bg);color:var(--pri);font-size:10px;font-weight:600;padding:1px 6px;border-radius:4px;margin-bottom:4px}
 .hi-card{background:#fff;border-radius:var(--rs);padding:12px 14px;margin-bottom:6px;box-shadow:0 1px 2px rgba(0,0,0,.04);border:1px solid var(--g100);cursor:pointer;transition:.15s}
 .hi-card:hover{border-color:var(--pri-l);box-shadow:var(--sh)}
 .hi-card.fp{border-left:3px solid var(--pur)}
@@ -141,7 +133,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:.2s}
 .modal-ov.show{opacity:1;pointer-events:auto}
-.modal-bx{background:#fff;border-radius:var(--r);padding:24px;max-width:340px;width:100%;box-shadow:var(--shl);text-align:center}
+.modal-bx{background:#fff;border-radius:var(--r);padding:24px;max-width:360px;width:100%;box-shadow:var(--shl);text-align:center}
 .modal-bx h3{font-size:16px;margin-bottom:6px}.modal-bx p{font-size:13px;color:var(--g500);margin-bottom:16px;white-space:pre-wrap}
 .modal-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .modal-btns .btn{font-size:13px;padding:10px}
@@ -157,8 +149,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 .cloud-status.ok{background:var(--suc-bg);border:1px solid var(--suc-l);color:var(--suc)}
 .cloud-status.err{background:var(--err-bg);border:1px solid var(--err-l);color:var(--err)}
 .cloud-status.loading{background:var(--wrn-bg);border:1px solid var(--wrn-l);color:var(--wrn)}
-.kbd-hint{display:none;font-size:10px;color:var(--g400);margin-top:6px;text-align:center}
-@media(min-width:1024px){.kbd-hint{display:block}}
+.paper-card{background:#fff;border:1px solid var(--g200);border-radius:var(--rs);padding:14px;margin-bottom:8px;cursor:pointer;transition:.15s;border-left:4px solid var(--pur)}
+.paper-card:hover{box-shadow:var(--shm);border-color:var(--pur-l)}
+.paper-card .pc-head{display:flex;justify-content:space-between;align-items:center}
+.paper-card .pc-date{font-size:11px;color:var(--g400)}
+.paper-card .pc-label{font-size:13px;font-weight:700;color:var(--g800);margin:2px 0}
+.paper-card .pc-stats{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.paper-card .pc-tag{font-size:10px;padding:2px 6px;border-radius:10px;font-weight:600;background:var(--pri-bg);color:var(--pri);border:1px solid var(--pri-l)}
+.paper-card .pc-del{background:none;border:none;font-size:12px;color:var(--g400);cursor:pointer;padding:4px 8px}
+.paper-card .pc-del:hover{color:var(--err)}
+.shuffle-papers{background:#fff;border:1px solid var(--g200);border-radius:var(--rs);padding:14px;margin-bottom:12px}
+.shuffle-papers label{display:flex;align-items:center;gap:8px;font-size:12px;margin-bottom:8px;cursor:pointer;padding:6px 0;border-bottom:1px solid var(--g50)}
+.shuffle-papers label:last-of-type{border-bottom:none}
+.shuffle-papers input[type=checkbox]{width:18px;height:18px;accent-color:var(--pur)}
+.shuffle-papers .sp-info{font-size:10px;color:var(--g400);margin-left:auto}
+.comment-box{margin-top:8px;padding:8px;background:var(--g50);border:1px solid var(--g200);border-radius:var(--rx)}
+.comment-item{background:#fff;border:1px solid var(--g200);border-radius:var(--rx);padding:6px 8px;margin-bottom:4px;font-size:11px}
+.comment-item .cm-date{font-size:10px;color:var(--g400)}
+.comment-input{display:flex;gap:6px;margin-top:6px}
+.comment-input input{flex:1;border:1px solid var(--g200);border-radius:var(--rx);padding:6px 8px;font-size:12px}
+.comment-input input:focus{border-color:var(--pri);outline:none}
+.comment-input button{padding:6px 10px;border:none;border-radius:var(--rx);background:var(--pri);color:#fff;font-size:11px;font-weight:600;cursor:pointer}
 </style>
 </head>
 <body>
@@ -166,22 +177,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Ro
 <div class="toast" id="toast"></div>
 <div class="modal-ov" id="mo"><div class="modal-bx"><h3 id="mT"></h3><p id="mM"></p><div class="modal-btns"><button class="btn btn-o" onclick="closeM()">取消</button><button class="btn btn-e" id="mC">確定</button></div></div></div>
 <script>
-// ===== CLOUD SAVE CONFIG =====
-const CLOUD_URL = 'https://script.google.com/macros/s/AKfycbwSlrUxnW6MZw8SFdkwa1UF07QykfUM49xsFntlTO5Z2j1qViA3vSMhq1X3hgmjvW07/exec';
+// ===== CONFIG =====
+const CLOUD_URL = 'https://script.google.com/macros/s/AKfycbw5xsTCNVWnJuvkDK2HUGyG9ckmzpe4fcJwz5WPtOJrGQcNhx-lTaGsZHE1eQ4iDvTO0A/exec';
 const CLOUD_TOKEN = 'mySecret2026';
-const CLOUD_FILE = 'cre_chinese_save.txt';
+const CLOUD_FILE = 'cre_chinese_v9.txt';
 
+// ===== UTILS =====
 function showM(t,m,cb,ok){document.getElementById('mT').textContent=t;document.getElementById('mM').textContent=m;const b=document.getElementById('mC');b.textContent=ok||'確定';b.onclick=()=>{closeM();cb()};document.getElementById('mo').classList.add('show')}
 function closeM(){document.getElementById('mo').classList.remove('show')}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400)}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-
 function nowStr(){const d=new Date();return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())+' '+p2(d.getHours())+':'+p2(d.getMinutes())}
+function dateStr(){const d=new Date();return d.getFullYear()+'-'+p2(d.getMonth()+1)+'-'+p2(d.getDate())}
+function shortDate(){const d=new Date();return(d.getMonth()+1)+'月'+d.getDate()+'日'}
 function p2(n){return String(n).padStart(2,'0')}
 function fmtT(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
 function fmtB(b){return b<1024?b+'B':b<1048576?(b/1024).toFixed(1)+'KB':(b/1048576).toFixed(1)+'MB'}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).substr(2,5)}
 function qKey(q){return(q.stem||'').substring(0,50)+'##'+((q.options&&q.options[0])||'')}
+function shuffleArr(arr){for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr}
 
 const PM=[
 {id:1,name:"Part 1 — 閱讀理解",desc:"文章+片段閱讀",count:14,icon:"📖"},
@@ -190,90 +204,235 @@ const PM=[
 {id:4,name:"Part 4 — 詞句運用",desc:"填充+銜接+排序",count:15,icon:"📝"}
 ];
 
-const PSG_BUILTIN=`隨着互聯網技術的發展和智能手機的普及，人們獲取資訊的方式已經產生了根本性的變化。在這個背景下，不少人開始質疑公共圖書館存在的必要性——既然幾乎所有資訊都能在網上找到，為什麼還需要實體的圖書館？\n\n事實上，這種疑問恰恰反映了人們對公共圖書館功能的狹隘理解。傳統上，圖書館確實以「藏書」和「借閱」為核心功能，但在數碼時代，其角色已經從單純的資訊提供者，轉變為社區學習和文化交流的樞紐。現代圖書館提供的服務早已超越書本借閱——從兒童故事時間、長者數碼素養課程，到創業者工作坊和社區對話活動，圖書館正在成為凝聚社區的公共空間。\n\n值得注意的是，數碼鴻溝問題並未因科技進步而消失。研究顯示，低收入家庭、長者及新來港人士在使用數碼設備和網上資源方面仍面對顯著困難。公共圖書館免費提供電腦設備、網絡連接及技術指導，在一定程度上縮窄了這道鴻溝。從這個角度看，圖書館的社會功能不僅沒有減退，反而在數碼時代變得更為重要。\n\n然而，我們也不能對圖書館的前景過於樂觀。經費不足、人手短缺、設施老化等問題長期困擾着不少公共圖書館。部分圖書館的藏書更新緩慢，難以跟上知識發展的步伐；加上開放時間有限，未能充分配合市民的生活節奏。若不能有效回應這些挑戰，圖書館被邊緣化的風險確實存在。\n\n歸根究底，公共圖書館的價值不在於它能否與互聯網競爭資訊量，而在於它能否提供一個平等、開放、有溫度的公共空間，讓不同背景的市民都能在此學習、交流和成長。這是任何數碼平台都無法完全取代的。`;
-
-const INIT_Q={
-1:[
-{stem:"作者撰寫本文的主要目的是什麼？",options:["批評政府對公共圖書館投放資源不足","探討公共圖書館在數碼時代的定位與價值","呼籲市民多使用公共圖書館的服務","比較實體圖書館與網上資源的優劣"],answer:1,explanation:"文章從頭到尾都在討論圖書館在數碼時代的角色轉變及其價值所在。",passage:true,_part:1},
-{stem:"根據文章，「不少人開始質疑公共圖書館存在的必要性」，作者對此看法是：",options:["完全同意，認為實體圖書館終將被取代","認為這反映了對圖書館功能的片面認識","認為這是合理的擔憂，圖書館確實面臨被淘汰的危機","認為提出質疑的人缺乏使用圖書館的經驗"],answer:1,explanation:"作者明確指出「這種疑問恰恰反映了人們對公共圖書館功能的狹隘理解」。",passage:true,_part:1},
-{stem:"作者提及「數碼鴻溝」的作用是：",options:["說明科技發展帶來的負面影響","證明圖書館在促進社會公平方面的角色","批評政府未能有效推動數碼普及","解釋為何長者不願意使用互聯網"],answer:1,explanation:"提及數碼鴻溝後說明圖書館如何縮窄鴻溝，論證其社會功能更重要。",passage:true,_part:1},
-{stem:"以下哪項是文中提及的圖書館面對的實際困難？",options:["市民閱讀風氣下降","藏書更新緩慢","社區居民反對圖書館改建","網上資源質素超越實體藏書"],answer:1,explanation:"第四段明確提到「部分圖書館的藏書更新緩慢」。",passage:true,_part:1},
-{stem:"作者認為公共圖書館的核心價值在於：",options:["擁有比互聯網更全面的資訊量","提供免費的電腦設備和網絡連接","提供平等開放的公共空間促進學習和交流","舉辦多元化的社區活動"],answer:2,explanation:"末段明確指出價值在於「提供一個平等、開放、有溫度的公共空間」。",passage:true,_part:1},
-{stem:"文中「從這個角度看」，「這個角度」指的是：",options:["圖書館提供多元化社區活動的角度","圖書館幫助弱勢群體跨越數碼鴻溝的角度","圖書館作為文化保育場所的角度","圖書館節省市民購書開支的角度"],answer:1,explanation:"緊接前文關於數碼鴻溝及圖書館為弱勢群體提供設備和指導的論述。",passage:true,_part:1},
-{stem:"以下哪項陳述與文章內容不符？",options:["現代圖書館的功能已超越傳統的藏書和借閱","所有社會群體都已能熟練使用數碼資源","公共圖書館面臨經費和人手方面的困難","作者認為圖書館仍有被邊緣化的風險"],answer:1,explanation:"文中明確指弱勢群體「仍面對顯著困難」，直接與B矛盾。",passage:true,_part:1},
-{stem:"對於圖書館的前景，作者的態度可以形容為：",options:["極度悲觀，認為被淘汰無可避免","盲目樂觀，認為圖書館地位不可動搖","審慎而有條件的肯定","完全中立，不表明任何立場"],answer:2,explanation:"一方面肯定價值，另一方面指出困難和風險，態度是審慎但基本肯定。",passage:true,_part:1},
-{stem:"「語言是活的，它隨時代變遷而不斷演化。過去被視為『不規範』的用法，若獲得廣泛使用並被大眾理解，最終也可能被接納為正式用法。然而，這並不意味着我們可以對語言運用採取完全放任的態度——標準的存在，正是為了確保溝通的準確和效率。」\n\n對這段話，理解最準確的是：",options:["語言標準是不必要的","只要多數人使用就是正確的","語言演變與語言規範之間需要取得平衡","語言規範應禁止任何新用法出現"],answer:2,explanation:"前半承認變化，後半強調標準必要——兩者需平衡。",_part:1},
-{stem:"「效率並非工作的唯一衡量標準。一位員工可能工作速度極快，卻忽略細節導致錯誤頻生。相反，另一位員工雖然產出較慢，但每份文件都仔細核對，鮮少出錯。單以產出數量來評定工作表現，顯然有欠公允。」\n\n以下哪項最能概括這段話的主旨？",options:["速度慢的員工表現一定比速度快的好","評估工作表現應考慮質量而不僅是數量","處理文件時應盡量減慢速度","企業應取消以產出數量為基礎的考核"],answer:1,explanation:"核心是「單以數量評定有欠公允」，應同時考慮質量。",_part:1},
-{stem:"「社交媒體讓人們能隨時分享生活點滴，但這種便利也帶來隱憂。當人們習慣將精心篩選的生活片段展示於人前，便容易產生錯覺——以為別人的生活總是光鮮亮麗。這種比較心態，往往是焦慮和不滿的溫床。」\n\n根據這段話，以下哪項說法正確？",options:["社交媒體上的內容完全不真實","使用社交媒體必然導致心理問題","人們傾向展示經過篩選的正面內容","應該禁止在社交媒體上分享生活"],answer:2,explanation:"文中明確指「精心篩選的生活片段展示於人前」。",_part:1},
-{stem:"「批判性思維並不等同於批評或否定。它的核心是在接收資訊時保持審慎態度，不輕易接受未經驗證的說法，同時也不武斷地拒絕與自己想法不同的觀點。」\n\n這段話指出批判性思維的特點是：",options:["對所有資訊持否定態度","只接受科學實驗證明的資訊","在接受與質疑之間保持理性平衡","堅持自己觀點不受他人影響"],answer:2,explanation:"「既不盲從，也不盲拒」表明是在接受和質疑之間取得平衡。",_part:1},
-{stem:"「一個政策的成敗，往往取決於執行層面而非設計層面。歷史上不乏構思精妙的政策因執行不力而功敗垂成。因此，政策制定者在構思階段便應充分考慮落實時可能遇到的困難。」\n\n以下哪項推論與這段話的邏輯最為一致？",options:["只要執行得當任何政策都能成功","設計完善的政策不需考慮執行細節","政策設計與執行應由不同部門負責","一項政策設計優良但失敗，可能是執行環節出了問題"],answer:3,explanation:"文中指出政策可因執行不力而失敗，D與此邏輯一致。",_part:1},
-{stem:"「所謂『知易行難』，很多人明白健康飲食的重要性。然而面對即時口腹之慾時，理性認知往往不敵感官誘惑。這說明單靠知識並不足以改變行為——還需要意志力和環境配合。」\n\n作者認為改變飲食行為需要什麼條件？",options:["只需充分的營養知識","知識、意志力和環境因素的配合","完全消除對美食的慾望","由政府強制規管飲食選擇"],answer:1,explanation:"文末明確指出需要知識加上意志力和環境配合。",_part:1}
-],
-2:[
-{stem:"選出沒有錯別字的句子。",options:["政府已就這項題議進行廣泛諮詢。","面對各種困難，他從不言棄，意志堅定。","各部門必須通力合作，才能事半工倍。","他的行為引起不少留言蜚語。"],answer:1,explanation:"A「題議」→議題；C「工倍」→功倍；D「留言」→流言。B正確。",_part:2},
-{stem:"選出沒有錯別字的句子。",options:["他辦事雷厲風行，從不拖泥帶水。","這位新同事表現有目共堵。","聽到好消息，大家都按耐不住興奮之情。","市民對政府的決定存有不少凝慮。"],answer:0,explanation:"B「共堵」→共睹；C「按耐」→按捺；D「凝慮」→疑慮。A正確。",_part:2},
-{stem:"選出沒有錯別字的句子。",options:["他處事嚴緊，從不馬虎了事。","管理層必須以身作則，為員工樹立榜樣。","這篇報告論據充份，說服力十足。","他對工作滿腔熱忱，深受同事愛帶。"],answer:1,explanation:"A「嚴緊」→嚴謹；C「充份」→充分；D「愛帶」→愛戴。B正確。",_part:2},
-{stem:"選出沒有錯別字的句子。",options:["這次合作為雙方帶來了互惠互利的效果。","他那番肺腹之言，令所有人動容。","面對突如奇來的意外，她表現得非常鎮定。","環保意識日漸普及，巿民紛紛響應減碳呼於。"],answer:0,explanation:"B「肺腹」→肺腑；C「奇來」→其來；D「呼於」→呼籲。A正確。",_part:2},
-{stem:"選出沒有錯別字的句子。",options:["部門之間必須加強溝通，避免互相推委。","這次考察獲益良多，定必向大家匯報。","他慷概解囊，捐助大筆善款幫助災民。","經過討論，委員會終於達成了一至共識。"],answer:1,explanation:"A「推委」→推諉；C「慷概」→慷慨；D「一至」→一致。B正確。",_part:2},
-{stem:"請選出簡化字錯誤對應繁體字的選項。",options:["讠 → 言","飞 → 飛","开 → 閒","艺 → 藝"],answer:2,explanation:"「开」繁體是「開」不是「閒」。「閒」簡化字是「闲」。",_part:2},
-{stem:"請選出簡化字錯誤對應繁體字的選項。",options:["国 → 國","书 → 書","众 → 從","车 → 車"],answer:2,explanation:"「众」繁體是「眾」不是「從」。「從」簡化字是「从」。",_part:2},
-{stem:"請選出簡化字錯誤對應繁體字的選項。",options:["学 → 學","亲 → 親","乡 → 鄉","节 → 結"],answer:3,explanation:"「节」繁體是「節」不是「結」。「結」簡化字是「结」。",_part:2}
-],
-3:[
-{stem:"選出有語病的句子。",options:["這項計劃的目的是為了改善偏遠地區居民的生活條件。","政府正研究多項措施，以紓緩公營醫療系統面對的壓力。","近年本港經濟穩步增長，市民生活水平持續提升。","只要各部門通力合作，相信定能在期限前完成任務。"],answer:0,explanation:"A「目的是為了」語義重複。",_part:3},
-{stem:"選出有語病的句子。",options:["這種說法不但沒有根據，而且對當事人造成了很大傷害。","即使面對再大的壓力，我們也要堅持原則。","我們必須加強防範和杜絕違規行為的發生。","他在比賽中屢獲殊榮，表現備受肯定。"],answer:2,explanation:"C「加強」不能修飾「杜絕」。",_part:3},
-{stem:"選出有語病的句子。",options:["他為人正直，深得同事信任。","由於經費嚴重不足，以致許多計劃被迫擱置。","除本地學生外，不少海外交換生也參加了活動。","隨着社會不斷發展，市民對公共服務的期望與日俱增。"],answer:1,explanation:"B「由於…以致…」搭配不當。",_part:3},
-{stem:"選出有語病的句子。",options:["調查顯示約七成受訪者支持擴建康體設施。","他為了表示感謝，特意親自登門拜訪道謝。","各委員意見紛呈，經長時間討論後達成共識。","只有積極配合防疫措施，市民健康才能得到保障。"],answer:1,explanation:"B「表示感謝」與「道謝」語義重複。",_part:3},
-{stem:"選出沒有犯邏輯錯誤的句子。",options:["他的十道菜全部美味，只是第三道稍遜色。","這次活動參加者包括教師和女性。","凡是優秀作品必經得起時間考驗。此作品經不起考驗，故非優秀作品。","現代人壓力大，所以現代人都有精神健康問題。"],answer:2,explanation:"C正確運用否定後件式。A矛盾；B交叉分類；D過度推論。",_part:3},
-{stem:"選出沒有犯邏輯錯誤的句子。",options:["只有用功才能考好。小明考好了，所以他一定用功了。","所有參賽者都是本地居民。小王是本地居民，所以他一定是參賽者。","活動參加者包括長者和退休人士。","每位同事都出席了會議，唯獨張先生因病缺席。"],answer:0,explanation:"A正確。B肯定後件錯誤；C交叉分類；D矛盾。",_part:3},
-{stem:"選出沒有犯邏輯錯誤的句子。",options:["他所有計劃都如期完成，只是第二個稍有延誤。","我市院校招收本省的、外省的和北京的學生。","若缺乏運動體能就下降。他體能下降了，所以一定缺乏運動。","在全球經濟一體化下，任何國家都難以完全不受外圍影響。"],answer:3,explanation:"D合乎邏輯。A矛盾；B交叉分類；C肯定後件錯誤。",_part:3},
-{stem:"選出沒有犯邏輯錯誤的句子。",options:["無論何人犯法都會受制裁。此官員犯法，所以會受制裁。","在座各位包括專業人士、商界精英和成功人士。","他每月全部收入用於租金和開支，還有一部分用作儲蓄。","他六篇文章全部被退稿，只有第四篇獲刊登。"],answer:0,explanation:"A正確。B交叉分類；C矛盾；D矛盾。",_part:3}
-],
-4:[
-{stem:"他雖是初次主持大型會議，但表現得_____________，一點也不怯場。",options:["游刃有餘","有條不紊","從容不迫","駕輕就熟"],answer:2,explanation:"「從容不迫」配「不怯場」；「駕輕就熟」與「初次」矛盾。",_part:4},
-{stem:"面對市場環境急劇變化，企業必須靈活_____________，才能保持競爭力。",options:["應對","應變","回應","反應"],answer:1,explanation:"「靈活應變」是固定搭配。",_part:4},
-{stem:"這篇報告立論清晰，_____________充分，極具說服力。",options:["論調","論據","論點","論述"],answer:1,explanation:"「論據充分」是固定搭配。",_part:4},
-{stem:"政府推出新政策前，必須廣泛_____________民意。",options:["收集","徵集","蒐集","諮詢"],answer:3,explanation:"「諮詢民意」是政府施政標準用語。",_part:4},
-{stem:"由於_____________未明，市民對新政策仍採取觀望態度。",options:["前景","前途","前因","前提"],answer:0,explanation:"「前景未明」是固定搭配。",_part:4},
-{stem:"面對外界質疑，他始終_____________，堅持自己的立場。",options:["不動聲色","不為所動","無動於衷","巋然不動"],answer:1,explanation:"「不為所動」指不被外界影響而改變立場。",_part:4},
-{stem:"「獨學而無友，則孤陋而寡聞。」_____________。同學之間互相切磋討論，往往能啟發新的思維角度。",options:["可見友誼比學業更重要","古人早已指出朋輩學習的重要性","因此學生應多花時間在社交活動上","然而現代人際關係日趨疏離"],answer:1,explanation:"引文指出獨學弊端，B承接古人觀點並引出後文。",_part:4},
-{stem:"城市規劃必須具備前瞻性。_____________。若只着眼當前問題而忽略長遠需要，日後必付出更高改建成本。",options:["然而城市發展速度往往超出預期","也就是說規劃者要預見未來二三十年的變化","因此城市規劃應交由專業人士全權負責","不過市民意見同樣不容忽視"],answer:1,explanation:"B具體解釋何謂前瞻，再引出後文反面論證。",_part:4},
-{stem:"很多人以為創意是天生的。_____________。研究顯示通過系統化訓練，任何人的創意潛能都可以被激發。",options:["事實上創意是可以後天培養的","由此可見先天因素決定一切","所以應該讓有創意的人發揮所長","然而天才畢竟是少數"],answer:0,explanation:"A用「事實上」引出相反觀點，完美銜接前後文。",_part:4},
-{stem:"閱讀經典的意義不僅在於獲取知識。_____________。一部好的文學作品能讓讀者體驗不同人生，培養同理心。",options:["這是因為經典內容十分豐富","更重要的是它能擴闊我們的生命經驗和視野","例如中國四大名著至今廣受歡迎","相比之下現代流行小說價值就低得多"],answer:1,explanation:"「更重要的是」銜接「不僅」，概括後文核心。",_part:4},
-{stem:"義工服務的價值在於雙方都有所得着。_____________。受助者得到幫助，義工也獲得滿足感和拓展社交。",options:["因此社會應大力推廣義工文化","然而不少義工反映工作量過大","這不是單方面施予而是互惠關係","義工服務種類繁多範圍廣泛"],answer:2,explanation:"C用「互惠」闡釋「雙方得着」。",_part:4},
-{stem:"選出正確排列次序。\n\n❶ 因此獲得「東方之珠」的美譽\n❷ 高樓大廈的燈光與維港水面相映成輝\n❸ 香港的夜景聞名於世\n❹ 每當夜幕降臨\n❺ 構成一幅璀璨奪目的畫面",options:["❸❹❷❺❶","❹❷❸❺❶","❸❶❹❷❺","❹❺❷❸❶"],answer:0,explanation:"❸總述→❹場景→❷描寫→❺效果→❶結論。",_part:4},
-{stem:"選出正確排列次序。\n\n❶ 每天堅持閱讀半小時\n❷ 日積月累知識自然增長\n❸ 培養良好閱讀習慣並不困難\n❹ 關鍵在於持之以恆\n❺ 即使每次只讀幾頁",options:["❸❹❶❺❷","❶❺❷❸❹","❸❶❺❹❷","❹❸❶❺❷"],answer:0,explanation:"❸總論→❹關鍵→❶做法→❺補充→❷結果。",_part:4},
-{stem:"選出正確排列次序。\n\n❶ 作為回收再造的原材料\n❷ 廢紙回收是減少堆填區壓力的有效方法\n❸ 從而減少砍伐樹木的需要\n❹ 市民只需將廢紙分類投入回收箱\n❺ 回收所得的廢紙會被送往造紙廠",options:["❷❹❺❶❸","❹❺❶❸❷","❷❺❶❹❸","❹❷❺❸❶"],answer:0,explanation:"❷意義→❹行動→❺流程→❶用途→❸效果。",_part:4},
-{stem:"選出正確排列次序。\n\n❶ 因此做決定時應三思而後行\n❷ 而倉促的決定往往事後令人悔恨\n❸ 人生中許多重要決定都不可逆轉\n❹ 一旦作出選擇便要承擔相應後果\n❺ 仔細權衡利弊得失",options:["❸❹❷❶❺","❸❷❹❺❶","❷❸❹❶❺","❸❹❷❺❶"],answer:0,explanation:"❸主題→❹解釋→❷反面→❶結論→❺具體化。",_part:4}
-]
-};
-
+// ===== 完整出題規範 PROMPTS =====
 const PROMPTS={
-1:`【Part 1 — 閱讀理解】出14題。Section A文章閱讀(8題)+Section B片段閱讀(6題)。\n輸出：{"part":1,"passage":"文章","questions":[{"stem":"","options":["","","",""],"answer":0,"explanation":"","passage":true}]}`,
-2:`【Part 2 — 字詞辨識】出8題。錯別字(5)+簡化字(3)。\n輸出：{"part":2,"questions":[{"stem":"","options":["","","",""],"answer":0,"explanation":""}]}`,
-3:`【Part 3 — 句子辨析】出8題。語病(4)+邏輯(4)。\n輸出：{"part":3,"questions":[{"stem":"","options":["","","",""],"answer":0,"explanation":""}]}`,
-4:`【Part 4 — 詞句運用】出15題。填充(6)+銜接(5)+排序(4)。\n輸出：{"part":4,"questions":[{"stem":"","options":["","","",""],"answer":0,"explanation":""}]}`,
-full:`【全份卷45題】P1(14)+P2(8)+P3(8)+P4(15)。\n輸出：{"fullPaper":true,"passage":"P1文章","parts":{"1":[14題],"2":[8題],"3":[8題],"4":[15題]}}`
+1:`你是CRE中文運用出卷委員。請出Part 1閱讀理解共14題。
+
+【結構】
+- Section I 文章閱讀（8題）：先寫一篇600-900字議論/說明文，再出8題
+- Section II 片段閱讀（6題）：每題自帶80-150字語段於stem內
+
+【文章要求】
+- 主題：公共政策/社會現象/工作文化/教育/環保/科技與生活（不涉政治爭議/宗教/專業學術）
+- 文體：議論文或說明文，中高級書面語
+- 結構：至少4段，有明確立場但非絕對化
+
+【Section I出題規則（8題）】
+- Sub-type分配：主旨歸納(1-2)/細節理解(2-3)/深層推斷(1-2)/作者態度(1)/篇章結構(1)
+- 題目按文章段落順序出（前2題考首段，中間考中段，最後1-2題考全篇）
+- 每題4選1，至少2個干擾項具表面合理性
+
+【Section II出題規則（6題）】
+- 每題stem內含80-150字獨立語段+提問
+- 考概括段意/推斷含義/支持否定觀點
+- 語段主題多元，不重複
+
+【陷阱設計】
+- 干擾項A：絕對化表述（程度偷換）
+- 干擾項B：文中出現但非本題所問（張冠李戴）
+- 干擾項C：表面合理但超出文章範圍（過度推論）
+- 干擾項D：與原文某句相似但偷換關鍵詞（偷換概念）
+- 正確答案ABCD位置隨機均勻分佈
+
+【否定式題幹】約40%題目用否定式（「不準確」「不符」），stem中否定詞需明確標示。
+
+【質量檢查】
+- 正確答案必須能從文中找到依據
+- 干擾項不可「兩者皆可」
+- Section I覆蓋文章各段
+
+【輸出JSON格式（嚴格遵守）】
+{"part":1,"passage":"（完整文章文本）","questions":[{"stem":"題目","options":["A","B","C","D"],"answer":0,"explanation":"解釋","passage":true},...]}}
+- answer為0-3對應ABCD
+- Section I的題目passage:true；Section II的題目passage:false（語段已嵌入stem）
+- 共14題
+
+請直接輸出JSON。`,
+
+2:`你是CRE中文運用出卷委員。請出Part 2字詞辨識共8題。
+
+【結構】
+- 錯別字題（5題）
+- 簡化字辨認題（3題）
+
+【錯別字題規則（5題）】
+- 題幹：「選出沒有錯別字的句子」或「選出有錯別字的句子」（交替使用）
+- 4個選項各為一個完整句子（15-30字）
+- 錯誤選項每句恰好含1個錯別字（不可2個以上）
+- 正確選項所有字完全正確
+- 錯字類型分配：形近混淆（凝/疑、嚴緊/嚴謹）、音同混淆（留言/流言、按耐/按捺）、偏旁混淆（肺腹/肺腑）、慣用搭配錯置（事半工倍/功倍）
+- 句子情境：辦公室/政府公告/日常生活/工作報告
+- 錯字要「日常慣用但易寫錯」，不考生僻字
+
+【簡化字題規則（3題）】
+- 題幹：「請選出簡化字錯誤對應繁體字的選項」
+- 4組「簡→繁」對照
+- 正確的3組必須無爭議正確
+- 錯誤的1組考：一簡多繁混淆（节→節≠結）或形近簡化字混淆（众→眾≠從）
+- 避免太常見的簡化字（人人都識的不考）
+
+【質量檢查】
+- 每個錯別字必須明確可指出（不可見仁見智）
+- 正確句不可有任何可疑用字
+- 8題正確答案ABCD均勻分佈（各2題）
+
+【輸出JSON格式（嚴格遵守）】
+{"part":2,"questions":[{"stem":"題幹","options":["A","B","C","D"],"answer":0,"explanation":"解釋（指出錯在哪、正確寫法）"},...]}}
+- answer為0-3
+- 共8題
+
+請直接輸出JSON。`,
+
+3:`你是CRE中文運用出卷委員。請出Part 3句子辨析共8題。
+
+【結構】
+- 語病辨析（4題）
+- 邏輯辨析（4題）
+
+【語病題規則（4題）】
+- 題幹：「選出有語病的句子」
+- 4個選項各為完整句子（20-40字，用長複句）
+- 恰好1句有語病，其餘3句語法完全正確
+- 語病類型分配（每題用一種）：
+  ① 搭配不當（「加強杜絕」）
+  ② 語義重複（「目的是為了」「親自登門拜訪道謝」）
+  ③ 關聯詞搭配錯誤（「由於…以致…」）
+  ④ 成分殘缺/多餘
+- 語病要隱蔽——讀起來順口但結構有問題
+- 正確句要包含長複句（讓考生「覺得太長應該有問題」但實際無問題）
+
+【邏輯題規則（4題）】
+- 題幹：「選出沒有犯邏輯錯誤的句子」
+- 4個選項各為完整句子
+- 恰好1句邏輯正確，其餘3句有邏輯錯誤
+- 錯誤類型（每題3個干擾項各用不同類型）：
+  ① 自相矛盾（「十個全部準確，只是最後一個有差誤」）
+  ② 分類交叉（「對象是男性和中下階層」——不互斥）
+  ③ 肯定後件（「只有A才B。有B，所以一定A」→ 無效推理）
+  ④ 否定前件（「若A則B。非A，所以非B」→ 無效推理）
+  ⑤ 程度絕對化（「現代人壓力大，所以都有精神問題」）
+- 正確句用「否定後件」（有效推理）或無邏輯瑕疵的普通陳述
+- 正確句不可太短/太簡單
+
+【質量檢查】
+- 語病必須能明確指出具體錯誤類型（不可灰色地帶）
+- 邏輯錯誤必須可用形式邏輯證明
+- 內容取材：政府施政/工作/學校/社區/日常推理
+- 8題正確答案ABCD均勻分佈
+
+【輸出JSON格式（嚴格遵守）】
+{"part":3,"questions":[{"stem":"題幹","options":["A","B","C","D"],"answer":0,"explanation":"解釋（指出語病/邏輯錯誤類型及具體位置）"},...]}}
+- answer為0-3
+- 共8題
+
+請直接輸出JSON。`,
+
+4:`你是CRE中文運用出卷委員。請出Part 4詞句運用共15題。
+
+【結構】
+- 詞語填充（6題）
+- 語句銜接（5題）
+- 句子排序（4題）
+
+【填充題規則（6題）】
+- stem含一個空格「_____________」，前後有語境句
+- 4個選項為近義詞（語義相近但搭配/語境不同）
+- 正確答案是唯一最佳搭配
+- 陷阱：語義相近但搭配不當/語境矛盾（如「駕輕就熟」配「初次」矛盾）/詞性不配
+- 取材：政府公文用語、日常書面語搭配、成語
+
+【銜接題規則（5題）】
+- stem格式：「前文。____。後文。」（前後文各1-2句）
+- 4個選項為可能的銜接句
+- 正確句必須同時承上啟下
+- 陷阱：只配前文不配後文/方向相反/跑題
+- 取材：議論文段落、說明文過渡
+
+【排序題規則（4題）】
+- stem列出❶❷❸❹❺五句
+- 4個選項為不同排列組合
+- 正確次序語義/邏輯唯一成立
+- 陷阱：首句錯置/因果倒置/邏輯斷鏈
+- 5句構成一個完整微型段落（總→分/因→果/時序）
+- 取材：說明文/議論文短段
+
+【質量檢查】
+- 填充：其他選項能明確說出為何不如正確答案
+- 銜接：正確句同時承上啟下，缺一不可
+- 排序：不可存在「另一種排法也通順」
+- 15題正確答案ABCD均勻分佈（各3-4題）
+- 4個選項不可有明顯語義偏離的（即全部選項表面合理）
+
+【輸出JSON格式（嚴格遵守）】
+{"part":4,"questions":[{"stem":"題幹","options":["A","B","C","D"],"answer":0,"explanation":"解釋"},...]}}
+- answer為0-3
+- 共15題
+- 排序題的options寫排列如"❸❹❷❺❶"
+
+請直接輸出JSON。`,
+
+full:`你是CRE中文運用出卷委員。請出一份完整模擬卷共45題。
+
+【全卷結構】
+- Part 1 閱讀理解（14題）：Section I文章閱讀8題 + Section II片段閱讀6題
+- Part 2 字詞辨識（8題）：錯別字5題 + 簡化字3題
+- Part 3 句子辨析（8題）：語病4題 + 邏輯4題
+- Part 4 詞句運用（15題）：填充6題 + 銜接5題 + 排序4題
+
+【Part 1規則】
+- 先寫一篇600-900字議論/說明文（公共政策/社會現象/教育/科技生活）
+- Section I（8題）按文章段落順序出：主旨歸納(1-2)/細節理解(2-3)/深層推斷(1-2)/作者態度(1)/篇章結構(1)
+- Section II（6題）每題stem內含80-150字獨立語段+提問
+- 約40%否定式題幹（「不準確」「不符」）
+- 陷阱：程度偷換/張冠李戴/過度推論/偷換概念
+
+【Part 2規則】
+- 錯別字（5題）：每錯誤選項恰好1個錯字，考形近/音同/偏旁混淆
+- 簡化字（3題）：選錯誤對應，考一簡多繁/形近混淆
+- 句子情境：辦公室/政府/日常
+
+【Part 3規則】
+- 語病（4題）：「選出有語病的」——搭配不當/語義重複/關聯詞錯/成分問題
+- 邏輯（4題）：「選出沒有犯邏輯錯誤的」——干擾用矛盾/交叉分類/無效推理
+- 語病要隱蔽，邏輯題需形式推理
+
+【Part 4規則】
+- 填充（6題）：近義詞辨析，唯一最佳搭配
+- 銜接（5題）：必須同時承上啟下
+- 排序（4題）：❶-❺五句，唯一正確次序
+
+【全卷質量】
+- 每Part正確答案ABCD均勻分佈
+- 不涉政治爭議/宗教/專業學術
+- 詞彙：中高級書面語（政府公文/新聞常見）
+
+【輸出JSON格式（嚴格遵守）】
+{"fullPaper":true,"passage":"（Part1的完整文章）","parts":{"1":[14題],"2":[8題],"3":[8題],"4":[15題]}}
+
+每題格式：{"stem":"","options":["A","B","C","D"],"answer":0,"explanation":""}
+- Part 1 Section I的題加"passage":true
+- answer為0-3對應ABCD
+
+請直接輸出JSON，不要其他文字。`
 };
 
 // ===== STATE =====
-let CQ=JSON.parse(JSON.stringify(INIT_Q));
-let PSG=PSG_BUILTIN;
-let IMP={1:0,2:0,3:0,4:0,full:0};
+let POOL={1:[],2:[],3:[],4:[]};
+let PAPERS=[];
 let WB={1:[],2:[],3:[],4:[]};
 let UB={1:[],2:[],3:[],4:[]};
 let HIST=[];
+let PSG='';
+let IMP={1:0,2:0,3:0,4:0,full:0};
 let PC=0;
 
-let PSG_HIST=[{text:PSG_BUILTIN,importedAt:'內置',label:'內置文章'}];
-
 let S={
-page:'home',tab:'quiz',wbSub:'wrong',
+page:'home',tab:'quiz',wbSub:'wrong',poolPart:null,
 part:null,qi:0,ans:{},flags:{},
 tSec:0,tOn:false,_tID:null,
 psgOpen:true,mode:'normal',qs:null,
 isFP:false,mapOpen:false,_bu:null,viewRec:null,
-_curPsg:PSG_BUILTIN
+_curPsg:'',_paperLabels:''
 };
 
 // ===== TIMER =====
@@ -281,6 +440,62 @@ function tStart(){if(S._tID)clearInterval(S._tID);S.tOn=true;S._tID=setInterval(
 function tPause(){S.tOn=false;if(S._tID){clearInterval(S._tID);S._tID=null}}
 function tReset(){tPause();S.tSec=0}
 function tStop(){tPause()}
+
+// ===== CLOUD (ALL-IN-ONE) =====
+function buildSave(){
+return{v:'9.2',savedAt:nowStr(),wb:WB,ub:UB,hist:HIST,imp:IMP,pc:PC,psg:PSG,pool:POOL,papers:PAPERS};
+}
+function applyLoad(d){
+if(d.wb)WB=d.wb;if(d.ub)UB=d.ub;if(d.hist)HIST=d.hist;
+if(d.psg)PSG=d.psg;if(d.imp)IMP=d.imp;if(d.pc!==undefined)PC=d.pc;
+if(d.pool){for(let i=1;i<=4;i++)POOL[i]=d.pool[i]||[]}
+if(d.papers)PAPERS=d.papers;
+for(let i=1;i<=4;i++){if(!WB[i])WB[i]=[];if(!UB[i])UB[i]=[];if(!POOL[i])POOL[i]=[]}
+}
+
+function cloudSaveAll(){
+const el=document.getElementById('cloudSt');
+if(el){el.className='cloud-status show loading';el.textContent='⏳ 儲存中...';}
+const saveData=JSON.stringify(buildSave());
+fetch(CLOUD_URL,{method:'POST',body:JSON.stringify({token:CLOUD_TOKEN,file:CLOUD_FILE,data:saveData})})
+.then(r=>r.json())
+.then(res=>{
+if(res.ok){
+if(el){el.className='cloud-status show ok';el.textContent='✅ 已儲存 '+nowStr()+' ('+fmtB(res.bytes)+')';}
+toast('☁️ 已儲存!');
+}else{
+if(el){el.className='cloud-status show err';el.textContent='❌ '+res.msg;}
+toast('儲存失敗');
+}
+}).catch(err=>{
+if(el){el.className='cloud-status show err';el.textContent='❌ '+err.message;}
+toast('儲存失敗');
+});
+}
+
+function cloudLoadAll(cb){
+const el=document.getElementById('cloudSt');
+if(el){el.className='cloud-status show loading';el.textContent='⏳ 讀取中...';}
+fetch(CLOUD_URL+'?token='+encodeURIComponent(CLOUD_TOKEN)+'&file='+encodeURIComponent(CLOUD_FILE))
+.then(r=>r.json())
+.then(res=>{
+if(res.ok){
+let d;try{d=JSON.parse(res.data)}catch(e){
+if(el){el.className='cloud-status show err';el.textContent='❌ 資料損壞';}
+toast('資料損壞');if(cb)cb();return;
+}
+applyLoad(d);
+if(el){el.className='cloud-status show ok';el.textContent='✅ 已讀取 '+nowStr();}
+toast('☁️ 已讀取!');
+}else{
+if(el){el.className='cloud-status show err';el.textContent='⚠️ '+(res.msg||'未找到存檔');}
+}
+if(cb)cb();R();
+}).catch(err=>{
+if(el){el.className='cloud-status show err';el.textContent='❌ '+err.message;}
+if(cb)cb();R();
+});
+}
 
 // ===== RENDER =====
 function R(){
@@ -291,37 +506,96 @@ else if(S.page==='detail')renderDetail(app);
 else renderHome(app);
 }
 
-// ===== HOME =====
 function renderHome(app){
-const tabs=['quiz','wrong','history','import','prompts','save'];
-const tNames=['做題','題庫','記錄','匯入','Prompt','存檔'];
-let h=`<div class="header"><h1>CRE 中文運用 — 練習系統</h1><div class="ver">v8.3 Cloud</div></div><div class="container">`;
-h+=`<div class="tab-bar">${tabs.map((t,i)=>`<button class="tab-btn ${S.tab===t?'active':''}" onclick="S.tab='${t}';R()">${tNames[i]}</button>`).join('')}</div>`;
+const tabs=['quiz','pool','wrong','history','import','save'];
+const tNames=['做題','題池','錯題','記錄','匯入','存檔'];
+let h=`<div class="header"><h1>CRE 中文運用 — 練習系統</h1><div class="ver">v9.2 All-in-One</div></div><div class="container">`;
+h+=`<div class="tab-bar">${tabs.map((t,i)=>`<button class="tab-btn ${S.tab===t?'active':''}" onclick="S.tab='${t}';S.poolPart=null;R()">${tNames[i]}</button>`).join('')}</div>`;
 if(S.tab==='quiz')h+=tabQuiz();
+else if(S.tab==='pool')h+=tabPool();
 else if(S.tab==='wrong')h+=tabWrong();
 else if(S.tab==='history')h+=tabHist();
 else if(S.tab==='import')h+=tabImport();
-else if(S.tab==='prompts')h+=tabPrompts();
 else h+=tabSave();
 h+=`</div>`;app.innerHTML=h;
 }
 
+// ===== TAB: 做題 =====
 function tabQuiz(){
 const tw=Object.values(WB).reduce((a,b)=>a+b.length,0);
-const tu=Object.values(UB).reduce((a,b)=>a+b.length,0);
-const tq=Object.values(CQ).reduce((a,b)=>a+b.length,0);
-let h=`<div class="stat-row"><div class="stat-card"><div class="stat-num">${HIST.length}</div><div class="stat-lbl">已完成</div></div><div class="stat-card"><div class="stat-num" style="color:var(--err)">${tw}</div><div class="stat-lbl">❌ 錯題</div></div><div class="stat-card"><div class="stat-num wrn">${tu}</div><div class="stat-lbl">⚠️ 不確定</div></div><div class="stat-card"><div class="stat-num">${tq}</div><div class="stat-lbl">題庫量</div></div></div>`;
-h+=`<div class="sec-title">📄 全份試卷（45題）</div>`;
-h+=`<div class="part-card fp" onclick="startFP()"><h3>📄 全份試卷模式</h3><p>Part 1→2→3→4 連續作答</p><span class="arrow">›</span></div>`;
-h+=`<div class="sec-title">📝 獨立Part</div>`;
+const tp=Object.values(POOL).reduce((a,b)=>a+b.length,0);
+let h=`<div class="stat-row"><div class="stat-card"><div class="stat-num">${HIST.length}</div><div class="stat-lbl">已完成</div></div><div class="stat-card"><div class="stat-num err">${tw}</div><div class="stat-lbl">❌ 錯題</div></div><div class="stat-card"><div class="stat-num">${tp}</div><div class="stat-lbl">📚 題池</div></div><div class="stat-card"><div class="stat-num wrn">${PAPERS.length}</div><div class="stat-lbl">📄 Papers</div></div></div>`;
+h+=`<div class="sec-title">📝 快速開始</div>`;
 PM.forEach(p=>{
-const n=CQ[p.id]?CQ[p.id].length:0;
-h+=`<div class="part-card" onclick="startP(${p.id})"><h3>${p.icon} ${p.name}</h3><p>${p.desc} · ${n}題</p><span class="arrow">›</span></div>`;
+const n=POOL[p.id]?POOL[p.id].length:0;
+h+=`<div class="part-card" onclick="startP(${p.id})"><h3>${p.icon} ${p.name}</h3><p>題池${n}題 · 隨機抽取</p><span class="arrow">›</span></div>`;
 });
+h+=`<div class="sec-title">🔀 按Paper撈亂</div>`;
+if(!PAPERS.length){h+=`<div class="info-box ib-w">未有Paper，去「匯入」加卷。</div>`}
+else{
+h+=`<div class="shuffle-papers">`;
+h+=`<div style="font-size:12px;font-weight:700;margin-bottom:10px">剔選要練習嘅Papers：</div>`;
+PAPERS.slice().reverse().forEach((p,i)=>{
+const cnt=getPaperQCount(p.id);
+h+=`<label><input type="checkbox" class="shp-cb" value="${p.id}" checked><span style="flex:1"><strong>${esc(p.label)}</strong><br><span style="font-size:10px;color:var(--g400)">${p.date} · ${p.type}</span></span><span class="sp-info">${cnt}題</span></label>`;
+});
+h+=`<div style="margin-top:10px;display:flex;align-items:center;gap:8px"><span style="font-size:12px">抽取上限：</span><input type="number" id="shNum" value="30" min="1" max="500" style="width:60px;border:1px solid var(--g200);border-radius:4px;padding:4px 8px;font-size:12px"><span style="font-size:10px;color:var(--g400)">0=全部</span></div>`;
+h+=`<button class="btn btn-pur" style="margin-top:12px" onclick="startShufflePapers()">🔀 撈亂開始</button>`;
+h+=`</div>`;
+}
+return h;
+}
+function getPaperQCount(paperId){let c=0;for(let i=1;i<=4;i++)c+=POOL[i].filter(q=>q.paperId===paperId).length;return c}
+
+// ===== TAB: 題池 =====
+function tabPool(){
+if(S.poolPart)return tabPoolDetail(S.poolPart);
+const tp=Object.values(POOL).reduce((a,b)=>a+b.length,0);
+let h=`<div class="info-box ib-b">📚 題池共 <strong>${tp}</strong> 題 · <strong>${PAPERS.length}</strong> 份Paper</div>`;
+PM.forEach(p=>{
+const items=POOL[p.id]||[];
+h+=`<div class="part-card" onclick="S.poolPart=${p.id};R()"><h3>${p.icon} ${p.name}</h3><p>${items.length}題</p><span class="arrow">›</span></div>`;
+});
+h+=`<div class="sec-title" style="margin-top:20px">📄 全部Papers（${PAPERS.length}）</div>`;
+if(!PAPERS.length)h+=`<div class="empty">未有Paper</div>`;
+else{
+PAPERS.slice().reverse().forEach(p=>{
+const cnt=getPaperQCount(p.id);
+h+=`<div class="paper-card"><div class="pc-head"><div class="pc-date">${p.date}</div><button class="pc-del" onclick="event.stopPropagation();delPaper('${p.id}')">🗑️</button></div><div class="pc-label">${esc(p.label)}</div><div class="pc-stats">`;
+for(let i=1;i<=4;i++){const n=POOL[i].filter(q=>q.paperId===p.id).length;if(n)h+=`<span class="pc-tag">P${i}: ${n}</span>`}
+h+=`<span class="pc-tag" style="background:var(--pur-bg);color:var(--pur);border-color:var(--pur-l)">共${cnt}題</span></div></div>`;
+});
+}
+// Prompts section
+h+=`<div class="sec-title" style="margin-top:24px">📋 出題 Prompt（複製去AI用）</div>`;
+h+=`<div class="info-box ib-p">流程：複製Prompt → Paste去AI → AI輸出JSON → 返嚟「匯入」tab貼上</div>`;
+h+=`<div class="card" style="border-left:4px solid var(--pur)"><h3 style="color:var(--pur);font-size:13px;margin-bottom:6px">📄 全份卷（45題）</h3><div class="prompt-box">${esc(PROMPTS.full)}</div><button class="btn btn-pur btn-sm" onclick="cpP('full')">複製 Prompt</button></div>`;
+PM.forEach(p=>{h+=`<div class="card"><h3 style="font-size:13px;margin-bottom:6px">${p.icon} ${p.name}</h3><div class="prompt-box">${esc(PROMPTS[p.id])}</div><button class="btn btn-s btn-sm" onclick="cpP(${p.id})">複製 Prompt</button></div>`});
 return h;
 }
 
-// ===== WRONG/UNCERTAIN BANK =====
+function tabPoolDetail(pid){
+const pm=PM.find(p=>p.id===pid);
+const items=POOL[pid]||[];
+const paperGroups={};
+items.forEach(q=>{const k=q.paperId||'unknown';if(!paperGroups[k])paperGroups[k]=[];paperGroups[k].push(q)});
+let h=`<button class="btn btn-o btn-sm" style="margin-bottom:12px" onclick="S.poolPart=null;R()">← 返回題池</button>`;
+h+=`<div class="sec-title">${pm.icon} ${pm.name}（共${items.length}題）</div>`;
+Object.keys(paperGroups).forEach(paperId=>{
+const paper=PAPERS.find(p=>p.id===paperId);
+const pqs=paperGroups[paperId];
+const label=paper?paper.label:'未分類';
+h+=`<div class="paper-card" onclick="togB('pool_${paperId}')"><div class="pc-label">${esc(label)}</div><div class="pc-stats"><span class="pc-tag">${pqs.length}題</span></div></div>`;
+h+=`<div class="ri-b" id="pool_${paperId}" style="background:var(--g50);border:1px solid var(--g200);border-radius:6px;margin-bottom:8px;margin-top:-4px;padding:10px">`;
+pqs.forEach((q,i)=>{h+=`<div style="padding:4px 0;border-bottom:1px solid var(--g100);font-size:12px"><strong>Q${i+1}</strong> ${esc(q.stem.length>60?q.stem.substring(0,60)+'…':q.stem)}</div>`});
+h+=`</div>`;
+});
+return h;
+}
+function delPaper(paperId){showM('刪除Paper','確定？',()=>{for(let i=1;i<=4;i++)POOL[i]=POOL[i].filter(q=>q.paperId!==paperId);PAPERS=PAPERS.filter(p=>p.id!==paperId);cloudSaveAll();toast('已刪除');R()},'刪除')}
+function cpP(k){copyTxt(PROMPTS[k]);toast('Prompt已複製！去AI貼上出題')}
+
+// ===== TAB: 錯題 =====
 function tabWrong(){
 const tw=Object.values(WB).reduce((a,b)=>a+b.length,0);
 const tu=Object.values(UB).reduce((a,b)=>a+b.length,0);
@@ -330,11 +604,10 @@ if(S.wbSub==='wrong')h+=renderBank(WB,'wrong');
 else h+=renderBank(UB,'uncertain');
 return h;
 }
-
 function renderBank(bank,type){
 const total=Object.values(bank).reduce((a,b)=>a+b.length,0);
-if(!total)return`<div class="empty">${type==='wrong'?'🎉 錯題庫為空！':'⚠️ 不確定題庫為空。做題時撳🚩標記。'}</div>`;
-let h=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn ${type==='wrong'?'btn-e':'btn-wrn'} btn-sm" onclick="startShuffle('${type}')" ${total<1?'disabled':''}>🔀 撈亂重做（${total}題）</button><button class="btn btn-g btn-sm" onclick="showM('清空','確定？不可撤銷。',()=>{${type==='wrong'?'WB':'UB'}={1:[],2:[],3:[],4:[]};toast('已清空');R()})">🗑️ 清空</button></div>`;
+if(!total)return`<div class="empty">${type==='wrong'?'🎉 冇錯題！':'⚠️ 未標記不確定題。'}</div>`;
+let h=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"><button class="btn ${type==='wrong'?'btn-e':'btn-wrn'} btn-sm" onclick="startBankShuffle('${type}')">🔀 撈亂重做（${total}題）</button><button class="btn btn-g btn-sm" onclick="showM('清空','確定？',()=>{${type==='wrong'?'WB':'UB'}={1:[],2:[],3:[],4:[]};toast('已清空');R()})">🗑️ 清空</button></div>`;
 PM.forEach(p=>{
 const items=bank[p.id]||[];if(!items.length)return;
 h+=`<div class="sec-title">${p.name}（${items.length}）<button class="btn btn-sm btn-o rt" onclick="startReview(${p.id},'${type}')">重做</button></div>`;
@@ -342,183 +615,95 @@ items.forEach((q,i)=>{h+=bankItem(q,i,p.id,type)});
 });
 return h;
 }
-
 function bankItem(q,idx,pid,bank){
-const isW=bank==='wrong';
-const cls=isW?'rw':'ru';const tagCls=isW?'ri-tag-r':'ri-tag-w';const tagTxt=isW?'錯誤':'不確定';
+const isW=bank==='wrong';const cls=isW?'rw':'ru';const tagCls=isW?'ri-tag-r':'ri-tag-w';const tagTxt=isW?'錯誤':'不確定';
 const elId=bank+pid+'_'+idx;
-let h=`<div class="ri ${cls}"><div class="ri-h" onclick="togB('${elId}')"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(q.stem.length>35?q.stem.substring(0,35)+'…':q.stem)}</span><span style="display:flex;align-items:center;gap:4px;flex-shrink:0"><span class="ri-tag ${tagCls}">${tagTxt}</span><button class="ri-del" onclick="event.stopPropagation();delBank('${bank}',${pid},${idx})" title="移除">✕</button></span></div>`;
+let h=`<div class="ri ${cls}"><div class="ri-h" onclick="togB('${elId}')"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(q.stem.length>35?q.stem.substring(0,35)+'…':q.stem)}</span><span style="display:flex;align-items:center;gap:4px;flex-shrink:0"><span class="ri-tag ${tagCls}">${tagTxt}</span><button class="ri-del" onclick="event.stopPropagation();delBank('${bank}',${pid},${idx})">✕</button></span></div>`;
 h+=`<div class="ri-b" id="${elId}">`;
-if(q._passage){
-h+=`<div class="lbl">📄 所屬文章 <span class="psg-label">${esc(q._psgLabel||'')}</span></div>`;
-h+=`<div class="psg-in-bank">${esc(q._passage).substring(0,300)}${q._passage.length>300?'…（展開見完整）':''}</div>`;
-}
-h+=`<div class="lbl">題目</div><div style="white-space:pre-wrap;margin-bottom:6px">${esc(q.stem)}</div>`;
-h+=`<div class="lbl">選項</div>`;
-(q.options||[]).forEach((o,j)=>{
-let c='opt-line';
-if(j===q.answer)c+=' opt-correct';
-else if(j===q.yourAnswer&&j!==q.answer)c+=' opt-wrong';
-h+=`<div class="${c}">${'ABCD'[j]}. ${esc(o)}${j===q.answer?' ✓':''}${j===q.yourAnswer&&j!==q.answer?' ← 你揀咗':''}</div>`;
-});
-if(q.yourAnswer!==undefined&&q.yourAnswer!==q.answer){
-h+=`<div class="lbl">你的答案</div><div style="color:var(--err);font-weight:600">${'ABCD'[q.yourAnswer]}</div>`;
-}
+if(q._passage)h+=`<div class="lbl">📄 所屬文章</div><div class="psg-in-bank">${esc(q._passage).substring(0,300)}${q._passage.length>300?'…':''}</div>`;
+h+=`<div class="lbl">題目</div><div style="white-space:pre-wrap;margin-bottom:6px">${esc(q.stem)}</div><div class="lbl">選項</div>`;
+(q.options||[]).forEach((o,j)=>{let c='opt-line';if(j===q.answer)c+=' opt-correct';else if(j===q.yourAnswer&&j!==q.answer)c+=' opt-wrong';h+=`<div class="${c}">${'ABCD'[j]}. ${esc(o)}${j===q.answer?' ✓':''}${j===q.yourAnswer&&j!==q.answer?' ← 你揀咗':''}</div>`});
 h+=`<div class="lbl">正確答案</div><div style="color:var(--suc);font-weight:600">${'ABCD'[q.answer]}. ${esc((q.options||[])[q.answer]||'')}</div>`;
 if(q.explanation)h+=`<div class="lbl">解釋</div><div>${esc(q.explanation)}</div>`;
-h+=`<div class="lbl">加入時間</div><div style="font-size:11px;color:var(--g400)">${q.dateAdded||'—'}</div>`;
-h+=`</div></div>`;
-return h;
+h+=`<div class="comment-box"><div class="lbl" style="margin-top:0">💬 留言</div>`;
+const comments=q.comments||[];
+if(comments.length)comments.forEach(c=>{h+=`<div class="comment-item"><div>${esc(c.text)}</div><div class="cm-date">${c.date||''}</div></div>`});
+h+=`<div class="comment-input"><input id="cmt_${bank}_${pid}_${idx}" placeholder="輸入留言"><button onclick="addComment('${bank}',${pid},${idx})">留言</button></div></div>`;
+h+=`</div></div>`;return h;
 }
 function togB(id){const e=document.getElementById(id);if(e)e.classList.toggle('show')}
-function delBank(bank,pid,idx){
-if(bank==='wrong')WB[pid].splice(idx,1);
-else UB[pid].splice(idx,1);
-toast('已移除');R();
+function delBank(bank,pid,idx){if(bank==='wrong')WB[pid].splice(idx,1);else UB[pid].splice(idx,1);toast('已移除');R()}
+function addComment(bank,pid,idx){
+const input=document.getElementById('cmt_'+bank+'_'+pid+'_'+idx);if(!input||!input.value.trim())return;
+const src=bank==='wrong'?WB:UB;if(!src[pid][idx].comments)src[pid][idx].comments=[];
+src[pid][idx].comments.push({text:input.value.trim(),date:nowStr()});toast('已留言');R();
 }
 
-// ===== HISTORY =====
+// ===== TAB: 記錄 =====
 function tabHist(){
-if(!HIST.length)return`<div class="empty">📋 暫無記錄<br><span style="font-size:11px;color:var(--g400)">完成練習後會自動儲存</span></div>`;
-let h=`<div class="info-box ib-b">📌 每次紀錄儲存全部題目+答案+文章，撳入去重睇。</div>`;
+if(!HIST.length)return`<div class="empty">📋 暫無記錄</div>`;
+let h='';
 const fp=HIST.filter(r=>r.isFP),pr=HIST.filter(r=>!r.isFP&&r.mode==='normal'),rv=HIST.filter(r=>r.mode!=='normal');
 if(fp.length){h+=`<div class="grp-title">📄 全份試卷（${fp.length}）</div>`;[...fp].reverse().forEach(r=>{h+=hiCard(r)})}
 if(pr.length){h+=`<div class="grp-title">📝 獨立Part（${pr.length}）</div>`;[...pr].reverse().forEach(r=>{h+=hiCard(r)})}
-if(rv.length){h+=`<div class="grp-title">🔄 重做（${rv.length}）</div>`;[...rv].reverse().forEach(r=>{h+=hiCard(r)})}
-h+=`<button class="btn btn-g" style="margin-top:16px" onclick="showM('清空記錄','確定？不可撤銷。',()=>{HIST=[];R();toast('已清空')})">🗑️ 清空全部記錄</button>`;
+if(rv.length){h+=`<div class="grp-title">🔄 重做/撈亂（${rv.length}）</div>`;[...rv].reverse().forEach(r=>{h+=hiCard(r)})}
+h+=`<button class="btn btn-g" style="margin-top:16px" onclick="showM('清空','確定？',()=>{HIST=[];R();toast('已清空')})">🗑️ 清空</button>`;
 return h;
 }
 function hiCard(r){
-const pn=r.isFP?'全份試卷':r.part===0?'混合重做':(PM.find(p=>p.id===r.part)?.name||'');
+const pn=r.isFP?'全份試卷':r.part===0?'撈亂':(PM.find(p=>p.id===r.part)?.name||'');
 const pct=r.total?Math.round(r.correct/r.total*100):0;
-return`<div class="hi-card ${r.isFP?'fp':''}" onclick="viewR('${r.id}')"><div class="hd">🕐 ${r.date} · ⏱ 用時${fmtT(r.time)}</div><div class="ht">${pn}</div><div class="hs">${r.correct}/${r.total} (${pct}%)</div></div>`;
+return`<div class="hi-card ${r.isFP?'fp':''}" onclick="viewR('${r.id}')"><div class="hd">🕐 ${r.date} · ⏱ ${fmtT(r.time)}</div><div class="ht">${pn}${r.paperLabels?' · '+esc(r.paperLabels):''}</div><div class="hs">${r.correct}/${r.total} (${pct}%)</div></div>`;
 }
 
+// ===== TAB: 匯入 =====
 function tabImport(){
-return`<div class="info-box ib-w"><h4>📋 流程</h4><ol><li>去 Prompt tab 複製</li><li>Paste去AI出題</li><li>Copy JSON → 落下面匯入</li></ol></div><div class="card"><h3 style="font-size:14px;margin-bottom:8px">貼上JSON</h3><textarea class="textarea" style="height:160px" id="impA" placeholder='{"fullPaper":true,"passage":"...","parts":{"1":[...],...}}'></textarea><button class="btn btn-p" style="margin-top:10px" onclick="doImport()">匯入</button><div id="impMsg" style="margin-top:6px;font-size:12px;display:none;padding:8px;border-radius:6px"></div></div>`;
+return`<div class="info-box ib-w"><h4>📋 流程</h4><ol><li>去「題池」tab複製Prompt</li><li>Paste去AI → AI輸出JSON</li><li>Copy JSON → 返嚟貼落下面</li></ol></div><div class="card"><h3 style="font-size:14px;margin-bottom:8px">貼上JSON</h3><textarea class="textarea" style="height:160px" id="impA" placeholder='{"fullPaper":true,"passage":"...","parts":{"1":[...],...}}'></textarea><div style="margin-top:8px;display:flex;gap:8px;align-items:center"><span style="font-size:12px">Paper標籤：</span><input id="impLabel" style="flex:1;border:1px solid var(--g200);border-radius:6px;padding:6px 10px;font-size:12px" placeholder="例：7月25日 模擬卷" value="${shortDate()} 練習"></div><button class="btn btn-p" style="margin-top:10px" onclick="doImport()">匯入到題池</button><div id="impMsg" style="margin-top:6px;font-size:12px;display:none;padding:8px;border-radius:6px"></div></div>`;
 }
-function tabPrompts(){
-let h=`<div class="card" style="border-left:4px solid var(--pur)"><h3 style="color:var(--pur);font-size:13px">📄 全份卷</h3><div class="prompt-box">${esc(PROMPTS.full)}</div><button class="btn btn-pur btn-sm" onclick="cpP('full')">複製</button></div>`;
-PM.forEach(p=>{h+=`<div class="card"><h3 style="font-size:13px">${p.icon} ${p.name}</h3><div class="prompt-box">${esc(PROMPTS[p.id])}</div><button class="btn btn-s btn-sm" onclick="cpP(${p.id})">複製</button></div>`});
-return h;
-}
-function cpP(k){copyTxt(PROMPTS[k]);toast('Prompt已複製')}
 
-// ===== SAVE TAB (with Cloud) =====
+// ===== TAB: 存檔 =====
 function tabSave(){
-const saveData=buildSave();
-const sz=new Blob([JSON.stringify(saveData)]).size;
-let h='';
-// Cloud section
-h+=`<div class="card" style="border-left:4px solid var(--suc)"><h3 style="font-size:14px;margin-bottom:6px;color:var(--suc)">☁️ 雲端存檔（Google Drive）</h3>`;
-h+=`<div class="info-box ib-g" style="margin-bottom:10px">✅ 已連接 · 檔案: ${CLOUD_FILE} · 大小: ${fmtB(sz)}</div>`;
-h+=`<button class="btn btn-cloud" style="margin-bottom:8px" onclick="cloudSave()">☁️ 一鍵雲端儲存</button>`;
-h+=`<button class="btn btn-p" onclick="cloudLoad()">📥 從雲端讀取</button>`;
-h+=`<div class="cloud-status" id="cloudSt"></div>`;
-h+=`</div>`;
-// Manual section
+const sz=new Blob([JSON.stringify(buildSave())]).size;
+let h=`<div class="card" style="border-left:4px solid var(--suc)"><h3 style="font-size:14px;margin-bottom:6px;color:var(--suc)">☁️ 雲端存檔（一檔制）</h3>`;
+h+=`<div class="save-info"><strong>存檔包含：</strong>題池(${Object.values(POOL).reduce((a,b)=>a+b.length,0)}題) + Papers(${PAPERS.length}份) + 錯題 + 不確定 + 記錄<br>📦 大小：<strong>${fmtB(sz)}</strong> · 檔案：${CLOUD_FILE}</div>`;
+h+=`<button class="btn btn-cloud" style="margin-bottom:8px" onclick="cloudSaveAll()">☁️ 一鍵儲存</button>`;
+h+=`<button class="btn btn-p" onclick="cloudLoadAll()">📥 從雲端讀取</button>`;
+h+=`<div class="cloud-status" id="cloudSt"></div></div>`;
 h+=`<div class="card"><h3 style="font-size:14px;margin-bottom:10px">📤 手動導出（後備）</h3>`;
-h+=`<div class="save-info"><strong>存檔包含：</strong><br>• ✅ 全部做題記錄（每題題目+答案+解釋+文章）<br>• ✅ 錯題庫（全部詳情+所屬文章）<br>• ✅ 不確定題庫<br>• ✅ 現有題庫<br>• ✅ 文章歷史<br><br>📦 大小：<strong>${fmtB(sz)}</strong></div>`;
-h+=`<button class="btn btn-o" onclick="doExport()">📋 複製存檔JSON</button>`;
-h+=`<div style="font-size:11px;color:var(--g400);margin-top:6px;text-align:center">Paste去備忘錄/Notes保存</div></div>`;
+h+=`<button class="btn btn-o" style="margin-bottom:6px" onclick="doExport()">📋 複製存檔JSON</button></div>`;
 h+=`<div class="card"><h3 style="font-size:14px;margin-bottom:10px;color:var(--pri)">📥 手動讀取</h3>`;
-h+=`<textarea class="textarea" style="height:100px" id="loadA" placeholder="Paste存檔JSON到此處"></textarea>`;
+h+=`<textarea class="textarea" style="height:100px" id="loadA" placeholder="Paste存檔JSON"></textarea>`;
 h+=`<button class="btn btn-p" style="margin-top:10px" onclick="doLoad()">讀檔還原</button></div>`;
 return h;
-}
-
-// ===== CLOUD SAVE FUNCTIONS =====
-function cloudSave(){
-if(!CLOUD_URL){toast('未設定Cloud URL');return}
-const saveData=JSON.stringify(buildSave());
-const statusEl=document.getElementById('cloudSt');
-if(statusEl){statusEl.className='cloud-status show loading';statusEl.textContent='⏳ 儲存中...';}
-fetch(CLOUD_URL,{method:'POST',body:JSON.stringify({token:CLOUD_TOKEN,file:CLOUD_FILE,data:saveData})})
-.then(r=>r.json())
-.then(res=>{
-if(res.ok){
-if(statusEl){statusEl.className='cloud-status show ok';statusEl.textContent='✅ 雲端已儲存! '+nowStr()+' ('+res.bytes+' bytes)';}
-toast('☁️ 雲端已儲存!');
-}else{
-if(statusEl){statusEl.className='cloud-status show err';statusEl.textContent='❌ '+res.msg;}
-toast('儲存失敗: '+res.msg);
-}
-}).catch(err=>{
-if(statusEl){statusEl.className='cloud-status show err';statusEl.textContent='❌ '+err.message;}
-toast('儲存失敗');
-});
-}
-
-function cloudLoad(){
-if(!CLOUD_URL){toast('未設定Cloud URL');return}
-const statusEl=document.getElementById('cloudSt');
-if(statusEl){statusEl.className='cloud-status show loading';statusEl.textContent='⏳ 讀取中...';}
-fetch(CLOUD_URL+'?token='+encodeURIComponent(CLOUD_TOKEN)+'&file='+encodeURIComponent(CLOUD_FILE))
-.then(r=>r.json())
-.then(res=>{
-if(res.ok){
-let d;try{d=JSON.parse(res.data)}catch(e){
-if(statusEl){statusEl.className='cloud-status show err';statusEl.textContent='❌ 資料損壞';}
-toast('資料損壞');return;
-}
-applyLoad(d);
-if(statusEl){statusEl.className='cloud-status show ok';statusEl.textContent='✅ 雲端已讀取! '+nowStr();}
-toast('☁️ 雲端已讀取!');R();
-}else{
-if(statusEl){statusEl.className='cloud-status show err';statusEl.textContent='⚠️ '+res.msg;}
-toast(res.msg);
-}
-}).catch(err=>{
-if(statusEl){statusEl.className='cloud-status show err';statusEl.textContent='❌ '+err.message;}
-toast('讀取失敗');
-});
-}
-
-function applyLoad(d){
-if(d.wb)WB=d.wb;if(d.ub)UB=d.ub;if(d.hist)HIST=d.hist;if(d.cq)CQ=d.cq;if(d.psg)PSG=d.psg;if(d.imp)IMP=d.imp;if(d.pc!==undefined)PC=d.pc;if(d.psgHist)PSG_HIST=d.psgHist;
-for(let i=1;i<=4;i++){if(!WB[i])WB[i]=[];if(!UB[i])UB[i]=[]}
 }
 
 // ===== QUIZ =====
 function renderQuiz(app){
 const qs=S.qs,q=qs[S.qi];if(!q){goHome();return}
-const title=S.isFP?'全份試卷':(PM.find(p=>p.id===S.part)?.name||'混合');
-const ml=S.mode==='review'?' （重做）':S.mode==='shuffle'?' （撈亂）':'';
-let h=`<div class="header"><button class="back-btn" onclick="showM('離開','進度不會保存。',goHome,'離開')">←</button><h1>${title}${ml}</h1></div><div class="container">`;
+const title=S.isFP?'全份試卷':(PM.find(p=>p.id===S.part)?.name||'撈亂');
+const ml=S.mode==='review'?'（重做）':S.mode==='shuffle'?'（撈亂）':'';
+let h=`<div class="header"><button class="back-btn" onclick="showM('離開','進度不會保存。',goHome,'離開')">←</button><h1>${title} ${ml}</h1></div><div class="container">`;
 h+=`<div class="quiz-bar"><span style="font-size:12px;color:var(--g500);font-weight:600">第${S.qi+1}/${qs.length}題</span><div class="timer-area"><span class="timer-n" id="tmr">${fmtT(S.tSec)}</span>`;
 h+=S.tOn?`<button class="timer-btn tb-pa" onclick="tPause();R()">⏸</button>`:`<button class="timer-btn tb-go" onclick="tStart();R()">▶</button>`;
 h+=`<button class="timer-btn tb-re" onclick="tReset();R()">↺</button></div></div>`;
 h+=`<button class="qmap-toggle" onclick="S.mapOpen=!S.mapOpen;R()">📍 題目導覽 ${S.mapOpen?'▲':'▼'}</button>`;
-if(S.mapOpen){
-h+=`<div class="qmap">`;
-qs.forEach((qq,i)=>{
-let cls='qmap-dot';if(i===S.qi)cls+=' cur';
-if(S.flags[i])cls+=' flag';else if(S.ans[i]!==undefined)cls+=' done';
-h+=`<div class="${cls}" onclick="S.qi=${i};R()">${i+1}</div>`;
-});h+=`</div>`;
-}
+if(S.mapOpen){h+=`<div class="qmap">`;qs.forEach((qq,i)=>{let cls='qmap-dot';if(i===S.qi)cls+=' cur';if(S.flags[i])cls+=' flag';else if(S.ans[i]!==undefined)cls+=' done';h+=`<div class="${cls}" onclick="S.qi=${i};R()">${i+1}</div>`});h+=`</div>`}
 if(S.isFP&&q._part){const prev=S.qi>0?qs[S.qi-1]:null;if(!prev||prev._part!==q._part){const pm=PM.find(p=>p.id===q._part);h+=`<div class="part-div"><h4>${pm?pm.icon:''} ${pm?pm.name:''}</h4></div>`;}}
-if(q._part===1&&S._curPsg){
+if(q._part===1&&q.passage&&S._curPsg){
 h+=`<button class="psg-toggle" onclick="S.psgOpen=!S.psgOpen;R()">📄 ${S.psgOpen?'收起':'展開'}閱讀文章</button>`;
 if(S.psgOpen)h+=`<div class="psg-box">${S._curPsg.replace(/\n/g,'<br>')}</div>`;
 }
-h+=`<div class="q-card"><div class="q-head"><span style="font-size:11px;color:var(--g400)">Q${S.qi+1}${q._part?' · P'+q._part:''}</span><button class="flag-btn ${S.flags[S.qi]?'on':''}" onclick="S.flags[S.qi]=!S.flags[S.qi];R()" title="標記不確定">${S.flags[S.qi]?'🚩':'⚑'}</button></div>`;
+h+=`<div class="q-card"><div class="q-head"><span style="font-size:11px;color:var(--g400)">Q${S.qi+1}${q._part?' · P'+q._part:''}</span><button class="flag-btn ${S.flags[S.qi]?'on':''}" onclick="S.flags[S.qi]=!S.flags[S.qi];R()">${S.flags[S.qi]?'🚩':'⚑'}</button></div>`;
 h+=`<div class="q-stem">${esc(q.stem).replace(/\n/g,'<br>')}</div>`;
 q.options.forEach((o,i)=>{h+=`<button class="opt-btn ${S.ans[S.qi]===i?'sel':''}" onclick="pickA(${i})">${'ABCD'[i]}. ${esc(o)}</button>`});
 h+=`</div><div class="nav-row">`;
 h+=S.qi>0?`<button class="btn btn-o" onclick="S.qi--;R();scrollTo(0,0)">← 上一題</button>`:`<div></div>`;
 h+=S.qi===qs.length-1?`<button class="btn btn-e" onclick="preSubmit()">交卷</button>`:`<button class="btn btn-p" onclick="S.qi++;R();scrollTo(0,0)">下一題 →</button>`;
-h+=`</div><div class="kbd-hint">快捷鍵：1-4選答案 · ←→切題 · F標記 · Enter下一題</div></div>`;
-app.innerHTML=h;
+h+=`</div></div>`;app.innerHTML=h;
 }
-
 function preSubmit(){
-const qs=S.qs;
-const un=qs.filter((_,i)=>S.ans[i]===undefined).length;
-const fl=Object.values(S.flags).filter(Boolean).length;
-let msg=`共${qs.length}題`;
-if(un)msg+=`\n⚠️ ${un}題未答`;
-if(fl)msg+=`\n🚩 ${fl}題標記為不確定`;
+const qs=S.qs;const un=qs.filter((_,i)=>S.ans[i]===undefined).length;const fl=Object.values(S.flags).filter(Boolean).length;
+let msg=`共${qs.length}題`;if(un)msg+=`\n⚠️ ${un}題未答`;if(fl)msg+=`\n🚩 ${fl}題不確定`;
 showM('交卷確認',msg,submitQ,'交卷');
 }
 
@@ -526,38 +711,30 @@ showM('交卷確認',msg,submitQ,'交卷');
 function renderResult(app){
 const qs=S.qs;let cor=0;qs.forEach((q,i)=>{if(S.ans[i]===q.answer)cor++});
 const pct=qs.length?Math.round(cor/qs.length*100):0;
-const title=S.isFP?'全份試卷成績':(PM.find(p=>p.id===S.part)?.name||'混合')+' 成績';
+const title=S.isFP?'全份試卷成績':(PM.find(p=>p.id===S.part)?.name||'撈亂')+' 成績';
 let h=`<div class="header"><h1>${title}</h1></div><div class="container">`;
-h+=`<div class="result-hero ${S.isFP?'fp':''}"><div class="big">${cor}/${qs.length}</div><div class="pct">${pct}%</div><div class="tm">⏱ 用時 ${fmtT(S.tSec)}</div>`;
-if(S.isFP){h+=`<div class="bd">`;PM.forEach(p=>{const pqs=qs.filter(q=>q._part===p.id);const pc=pqs.filter(q=>{const gi=qs.indexOf(q);return S.ans[gi]===q.answer}).length;h+=`<div class="bd-i"><div class="bl">P${p.id}</div><div class="bs">${pc}/${pqs.length}</div></div>`;});h+=`</div>`;}
+h+=`<div class="result-hero ${S.isFP?'fp':''}"><div class="big">${cor}/${qs.length}</div><div class="pct">${pct}%</div><div class="tm">⏱ ${fmtT(S.tSec)}</div>`;
+if(S.isFP){h+=`<div class="bd">`;PM.forEach(p=>{const pqs=qs.filter(q=>q._part===p.id);const pc=pqs.filter(q=>{const gi=qs.indexOf(q);return S.ans[gi]===q.answer}).length;h+=`<div class="bd-i"><div class="bl">P${p.id}</div><div class="bs">${pc}/${pqs.length}</div></div>`});h+=`</div>`}
 h+=`<div class="dots">`;qs.forEach((q,i)=>{const a=S.ans[i];h+=`<div class="dot ${a===undefined?'sk':a===q.answer?'ok':'ng'}">${i+1}</div>`});h+=`</div></div>`;
-if(S._bu)h+=`<div class="bank-msg">✅ 錯題庫：+${S._bu.a}新 · ${S._bu.r}掌握 · 現存${S._bu.tw}題${S._bu.u?`<br>⚠️ 不確定：+${S._bu.u}題加入`:''}</div>`;
-const wc=qs.filter((q,i)=>S.ans[i]!==undefined&&S.ans[i]!==q.answer).length;
-if(wc)h+=`<button class="btn btn-e" style="margin-bottom:12px" onclick="cpWrong()">📋 複製錯題到Keep（${wc}題）</button>`;
+if(S._bu)h+=`<div class="bank-msg">✅ +${S._bu.a}錯題 · ${S._bu.r}掌握 · 現存${S._bu.tw}題${S._bu.u?` · +${S._bu.u}不確定`:''}</div>`;
 h+=`<div class="sec-title">逐題溫習</div>`;
-let lp=0;
-qs.forEach((q,i)=>{
-if(S.isFP&&q._part&&q._part!==lp){lp=q._part;const pm=PM.find(p=>p.id===q._part);h+=`<div class="part-div"><h4>${pm?pm.icon:''} ${pm?pm.name:''}</h4></div>`;}
+let lp=0;qs.forEach((q,i)=>{
+if(S.isFP&&q._part&&q._part!==lp){lp=q._part;const pm=PM.find(p=>p.id===q._part);h+=`<div class="part-div"><h4>${pm?pm.icon:''} ${pm?pm.name:''}</h4></div>`}
 const ua=S.ans[i],ok=ua===q.answer;h+=riItem(q,i,ua,ok);
 });
 h+=`<button class="btn btn-p" style="margin-top:16px" onclick="goHome()">返回主頁</button></div>`;
 app.innerHTML=h;
 }
-
 function riItem(q,i,ua,ok){
 let h=`<div class="ri ${ok?'rr':'rw'}"><div class="ri-h" onclick="togRI(${i})"><span>${ok?'✓':'✗'} Q${i+1}</span><span class="ri-tag ${ok?'ri-tag-g':'ri-tag-r'}">${ok?'正確':'錯誤'}</span></div><div class="ri-b" id="rb${i}">`;
 h+=`<div class="lbl">題目</div><div style="white-space:pre-wrap;margin-bottom:4px">${esc(q.stem)}</div><div class="lbl">選項</div>`;
-q.options.forEach((o,j)=>{
-let cls='opt-line';if(j===q.answer)cls+=' opt-correct';else if(j===ua&&!ok)cls+=' opt-wrong';
-h+=`<div class="${cls}">${'ABCD'[j]}. ${esc(o)}${j===q.answer?' ✓':''}${j===ua&&!ok?' ← 你揀咗':''}</div>`;
-});
+q.options.forEach((o,j)=>{let cls='opt-line';if(j===q.answer)cls+=' opt-correct';else if(j===ua&&!ok)cls+=' opt-wrong';h+=`<div class="${cls}">${'ABCD'[j]}. ${esc(o)}${j===q.answer?' ✓':''}${j===ua&&!ok?' ← 你揀咗':''}</div>`});
 if(!ok&&ua!==undefined)h+=`<div class="lbl">你的答案</div><div style="color:var(--err);font-weight:600">${'ABCD'[ua]}</div>`;
 h+=`<div class="lbl">正確答案</div><div style="color:var(--suc);font-weight:600">${'ABCD'[q.answer]}</div>`;
 if(q.explanation)h+=`<div class="lbl">解釋</div><div>${esc(q.explanation)}</div>`;
 h+=`</div></div>`;return h;
 }
 function togRI(i){const e=document.getElementById('rb'+i);if(e)e.classList.toggle('show')}
-
 function renderDetail(app){
 const r=HIST.find(x=>x.id===S.viewRec);
 if(!r||!r.questions){toast('無法載入');goHome();return}
@@ -571,32 +748,47 @@ function pickA(i){S.ans[S.qi]=i;R()}
 function viewR(id){S.viewRec=id;S.page='detail';R();scrollTo(0,0)}
 
 function startP(pid){
-if(!CQ[pid]||!CQ[pid].length){toast('冇題目');return}
-let qs=JSON.parse(JSON.stringify(CQ[pid]));qs.forEach(q=>q._part=pid);
-S._curPsg=PSG;
+if(!POOL[pid]||!POOL[pid].length){toast('題池冇題目，去「匯入」加卷');return}
+let qs=JSON.parse(JSON.stringify(POOL[pid]));qs.forEach(q=>q._part=pid);
+const paper=PAPERS.find(p=>POOL[pid].some(q=>q.paperId===p.id&&q.passage));
+S._curPsg=paper?paper.passage||'':'';
 beginQ(qs,'normal',pid,false);
 }
-function startFP(){
-let qs=[];for(let i=1;i<=4;i++){const p=JSON.parse(JSON.stringify(CQ[i]||[]));p.forEach(q=>q._part=i);qs=qs.concat(p)}
-if(!qs.length){toast('冇題目');return}
-S._curPsg=PSG;
-beginQ(qs,'normal',0,true);
+
+function startShufflePapers(){
+const cbs=document.querySelectorAll('.shp-cb:checked');
+if(!cbs.length){toast('請揀至少一份Paper');return}
+const ids=[...cbs].map(c=>c.value);
+let all=[];
+for(let i=1;i<=4;i++){
+POOL[i].filter(q=>ids.includes(q.paperId)).forEach(q=>{all.push({...JSON.parse(JSON.stringify(q)),_part:i})});
 }
+if(!all.length){toast('揀咗嘅Paper冇題目');return}
+const numEl=document.getElementById('shNum');
+let num=numEl?parseInt(numEl.value):0;
+if(!num||num>=all.length)num=all.length;
+all=shuffleArr(all).slice(0,num);
+const firstPaper=PAPERS.find(p=>ids.includes(p.id)&&p.passage);
+S._curPsg=firstPaper?firstPaper.passage:'';
+S._paperLabels=ids.map(id=>{const p=PAPERS.find(x=>x.id===id);return p?p.label:''}).filter(Boolean).join(', ');
+beginQ(all,'shuffle',0,false);
+}
+
 function startReview(pid,bank){
 const src=bank==='wrong'?WB:UB;
 if(!src[pid]||!src[pid].length){toast('冇題目');return}
 let qs=JSON.parse(JSON.stringify(src[pid]));qs.forEach(q=>q._part=pid);
-S._curPsg=(qs[0]&&qs[0]._passage)||PSG;
+S._curPsg=(qs[0]&&qs[0]._passage)||'';
 beginQ(qs,'review',pid,false);
 }
-function startShuffle(bank){
+function startBankShuffle(bank){
 const src=bank==='wrong'?WB:UB;
 let all=[];Object.keys(src).forEach(k=>src[k].forEach(q=>all.push({...JSON.parse(JSON.stringify(q)),_part:+k})));
 if(!all.length){toast('冇題目');return}
-for(let i=all.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[all[i],all[j]]=[all[j],all[i]]}
-S._curPsg=PSG;
+shuffleArr(all);S._curPsg='';
 beginQ(all,'shuffle',0,false);
 }
+
 function beginQ(qs,mode,part,fp){
 S.page='quiz';S.qs=qs;S.mode=mode;S.part=part;S.isFP=fp;
 S.qi=0;S.ans={};S.flags={};S.tSec=0;S.tOn=false;S.mapOpen=false;S.psgOpen=true;S._bu=null;
@@ -608,106 +800,80 @@ R();
 function submitQ(){
 tStop();const qs=S.qs;const submitTime=nowStr();
 let cor=0,added=0,removed=0,uncAdded=0;
-const psgLabel=submitTime+' 文章';
 qs.forEach((q,i)=>{
 const pid=q._part||S.part||1;if(pid<1||pid>4)return;
-const key=qKey(q);
-const bi=WB[pid].findIndex(e=>qKey(e)===key);
-if(S.ans[i]===q.answer){
-cor++;
-if(bi>=0){WB[pid].splice(bi,1);removed++}
-}else if(S.ans[i]!==undefined){
+const key=qKey(q);const bi=WB[pid].findIndex(e=>qKey(e)===key);
+if(S.ans[i]===q.answer){cor++;if(bi>=0){WB[pid].splice(bi,1);removed++}}
+else if(S.ans[i]!==undefined){
 if(bi<0){
-const entry={stem:q.stem,options:q.options,answer:q.answer,explanation:q.explanation||'',_part:pid,dateAdded:submitTime,yourAnswer:S.ans[i]};
-if(pid===1&&S._curPsg){entry._passage=S._curPsg;entry._psgLabel=psgLabel}
-WB[pid].push(entry);
-added++;
+const entry={stem:q.stem,options:q.options,answer:q.answer,explanation:q.explanation||'',_part:pid,dateAdded:submitTime,yourAnswer:S.ans[i],comments:[]};
+if(pid===1&&S._curPsg){entry._passage=S._curPsg}
+WB[pid].push(entry);added++;
 }else{WB[pid][bi].yourAnswer=S.ans[i];WB[pid][bi].dateAdded=submitTime}
 }
 if(S.flags[i]){
 const ui=UB[pid].findIndex(e=>qKey(e)===key);
 if(ui<0){
-const entry={stem:q.stem,options:q.options,answer:q.answer,explanation:q.explanation||'',_part:pid,dateAdded:submitTime,yourAnswer:S.ans[i]};
-if(pid===1&&S._curPsg){entry._passage=S._curPsg;entry._psgLabel=psgLabel}
-UB[pid].push(entry);
-uncAdded++;
+const entry={stem:q.stem,options:q.options,answer:q.answer,explanation:q.explanation||'',_part:pid,dateAdded:submitTime,yourAnswer:S.ans[i],comments:[]};
+if(pid===1&&S._curPsg){entry._passage=S._curPsg}
+UB[pid].push(entry);uncAdded++;
 }
 }
 });
 PC++;
-HIST.push({
-id:uid(),
-date:submitTime,
-part:S.part||0,
-mode:S.mode,
-total:qs.length,
-correct:cor,
-time:S.tSec,
-isFP:S.isFP,
-passage:S._curPsg||'',
-questions:qs.map(q=>({stem:q.stem,options:q.options,answer:q.answer,explanation:q.explanation||'',_part:q._part,passage:q.passage||false})),
-answers:{...S.ans}
-});
+HIST.push({id:uid(),date:submitTime,part:S.part||0,mode:S.mode,total:qs.length,correct:cor,time:S.tSec,isFP:S.isFP,passage:S._curPsg||'',paperLabels:S._paperLabels||'',questions:qs.map(q=>({stem:q.stem,options:q.options,answer:q.answer,explanation:q.explanation||'',_part:q._part,passage:q.passage||false})),answers:{...S.ans}});
 const tw=Object.values(WB).reduce((a,b)=>a+b.length,0);
 S._bu={a:added,r:removed,tw,u:uncAdded};
-S.page='result';R();scrollTo(0,0);
-toast(`已儲存！+${added}錯題`);
-}
-
-// ===== COPY WRONG =====
-function cpWrong(){
-const qs=S.qs;
-let txt=`📝 CRE中文 錯題 · ${nowStr()}\n${'═'.repeat(20)}\n\n`;
-let n=0;
-qs.forEach((q,i)=>{
-if(S.ans[i]===undefined||S.ans[i]===q.answer)return;n++;
-txt+=`❌ Q${i+1}${q._part?' [P'+q._part+']':''}\n`;
-txt+=`${q.stem}\n\n`;
-q.options.forEach((o,j)=>{txt+=`${j===q.answer?'✓':'　'}${'ABCD'[j]}. ${o}\n`});
-txt+=`\n✗ 你選：${'ABCD'[S.ans[i]]}\n`;
-if(q.explanation)txt+=`💡 ${q.explanation}\n`;
-txt+=`\n${'─'.repeat(20)}\n\n`;
-});
-copyTxt(txt);toast(`已複製${n}題`);
+S.page='result';R();scrollTo(0,0);toast(`已儲存！+${added}錯題`);
+// 自動雲端儲存
+cloudSaveAll();
 }
 
 // ===== IMPORT =====
 function doImport(){
-const area=document.getElementById('impA'),msg=document.getElementById('impMsg');if(!area)return;
+const area=document.getElementById('impA'),msg=document.getElementById('impMsg'),labelEl=document.getElementById('impLabel');
+if(!area)return;
 let raw=area.value.trim();if(!raw){sMsg(msg,'請paste JSON','r');return}
 const cm=raw.match(/```(?:json)?\s*([\s\S]*?)```/);if(cm)raw=cm[1].trim();
 let d;try{d=JSON.parse(raw)}catch(e){sMsg(msg,'JSON錯誤：'+e.message,'r');return}
 const impTime=nowStr();
+const label=(labelEl&&labelEl.value.trim())||shortDate()+' 練習';
+const paperId='paper_'+Date.now().toString(36)+Math.random().toString(36).substr(2,4);
+
 if(d.fullPaper&&d.parts){
-let tot=0;
-for(let pid=1;pid<=4;pid++){const pqs=d.parts[String(pid)];if(!pqs||!Array.isArray(pqs))continue;pqs.forEach(q=>q._part=pid);CQ[pid]=pqs;IMP[pid]++;tot+=pqs.length;}
-if(d.passage){PSG=d.passage;PSG_HIST.push({text:d.passage,importedAt:impTime,label:'全份卷 '+impTime})}
-IMP.full++;
-sMsg(msg,`✓ 全份卷匯入！共${tot}題`,'g');area.value='';toast('匯入成功');R();return;
+let tot=0;const counts={};
+for(let pid=1;pid<=4;pid++){
+const pqs=d.parts[String(pid)];if(!pqs||!Array.isArray(pqs))continue;
+pqs.forEach(q=>{q._part=pid;q.id=uid();q.paperId=paperId;q.paperDate=dateStr()});
+POOL[pid]=POOL[pid].concat(pqs);
+tot+=pqs.length;counts[pid]=pqs.length;IMP[pid]++;
 }
-if(!d.part||!d.questions){sMsg(msg,'格式錯誤','r');return}
+PAPERS.push({id:paperId,date:dateStr(),label:label,addedAt:impTime,type:'全份卷',passage:d.passage||'',counts:counts,totalQ:tot});
+if(d.passage)PSG=d.passage;
+IMP.full++;
+sMsg(msg,`✓ 全份卷「${label}」匯入！共+${tot}題`,'g');area.value='';toast('匯入成功');
+cloudSaveAll();R();return;
+}
+if(!d.part||!d.questions){sMsg(msg,'格式錯誤：需要有 part + questions 或 fullPaper + parts','r');return}
 const pid=d.part;if(pid<1||pid>4){sMsg(msg,'part須1-4','r');return}
-d.questions.forEach(q=>q._part=pid);CQ[pid]=d.questions;
-if(d.passage){PSG=d.passage;PSG_HIST.push({text:d.passage,importedAt:impTime,label:'P1 '+impTime})}
+d.questions.forEach(q=>{q._part=pid;q.id=uid();q.paperId=paperId;q.paperDate=dateStr()});
+POOL[pid]=POOL[pid].concat(d.questions);
+const counts={};counts[pid]=d.questions.length;
+PAPERS.push({id:paperId,date:dateStr(),label:label,addedAt:impTime,type:'Part '+pid,passage:d.passage||'',counts:counts,totalQ:d.questions.length});
+if(d.passage)PSG=d.passage;
 IMP[pid]++;
-sMsg(msg,`✓ Part ${pid} 匯入 ${d.questions.length} 題`,'g');area.value='';toast('匯入成功');
+sMsg(msg,`✓「${label}」Part ${pid} +${d.questions.length}題`,'g');area.value='';toast('匯入成功');
+cloudSaveAll();R();
 }
 function sMsg(el,txt,c){if(!el)return;el.style.display='block';el.style.background=c==='r'?'var(--err-bg)':'var(--suc-bg)';el.style.color=c==='r'?'var(--err)':'var(--suc)';el.textContent=txt}
 
 // ===== SAVE/LOAD =====
-function buildSave(){
-return{v:'8.3',savedAt:nowStr(),wb:WB,ub:UB,hist:HIST,imp:IMP,pc:PC,cq:CQ,psg:PSG,psgHist:PSG_HIST};
-}
-function doExport(){
-copyTxt(JSON.stringify(buildSave()));toast('存檔已複製！去備忘錄Paste保存');
-}
+function doExport(){copyTxt(JSON.stringify(buildSave()));toast('存檔已複製！')}
 function doLoad(){
 const area=document.getElementById('loadA');if(!area)return;
-let raw=area.value.trim();if(!raw){toast('請paste存檔');return}
-let d;try{d=JSON.parse(raw)}catch(e){toast('JSON格式錯誤');return}
-applyLoad(d);
-const qCount=Object.values(CQ).reduce((a,b)=>a+b.length,0);
-toast(`讀檔成功！${HIST.length}筆記錄 · ${qCount}題`);area.value='';R();
+let raw=area.value.trim();if(!raw){toast('請paste');return}
+let d;try{d=JSON.parse(raw)}catch(e){toast('JSON錯誤');return}
+applyLoad(d);toast('已還原！');area.value='';R();
 }
 function copyTxt(t){if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).catch(()=>fbCopy(t));else fbCopy(t)}
 function fbCopy(t){const ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;opacity:0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta)}
@@ -723,7 +889,8 @@ else if(e.key==='ArrowLeft'){e.preventDefault();if(S.qi>0){S.qi--;R();scrollTo(0
 else if(e.key.toLowerCase()==='f'){e.preventDefault();S.flags[S.qi]=!S.flags[S.qi];R()}
 });
 
-R();
+// ===== INIT =====
+cloudLoadAll(()=>{});
 </script>
 </body>
 </html>
