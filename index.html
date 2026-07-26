@@ -525,7 +525,7 @@ h+=`<div class="stat-pill" onclick="S.tab='memo';R()"><div class="sp-icon ic-mem
 h+=`<div class="stat-pill" onclick="S.tab='notes';R()"><div class="sp-icon ic-note">${IC.notebook}</div><div><div class="sp-num">${NOTES.length}</div><div class="sp-lbl">筆記</div></div></div>`;
 h+=`</div><button class="scroll-arrow right" onclick="scrollPills(1)">${IC.chevRight}</button></div>`;
 // Papers
-h+=`<div class="sec"><div class="sec-head"><div class="sec-title">選Paper做題</div></div></div>`;
+h+=`<div class="sec"><div class="sec-head"><div class="sec-title">快速開始</div></div></div>`;
 const dates=getUniqueDates();
 if(dates.length>0){
 h+=`<div class="date-chips"><div class="date-chip ${S.dateFilter==='all'?'on':''}" onclick="S.dateFilter='all';R()">全部</div>`;
